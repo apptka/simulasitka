@@ -1,0 +1,3252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi TKA - Belajar dengan Asisten</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f7ff;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            background-image: linear-gradient(to bottom right, #e6f0ff, #f9fbff);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 100, 200, 0.15);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a6dcc, #0d4d9c);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%230a4296' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.2;
+        }
+        
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .student-info {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: inline-block;
+            font-size: 16px;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(5px);
+        }
+        
+        .logo {
+            font-size: 32px;
+        }
+        
+        .app-container {
+            display: flex;
+            min-height: 700px;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background-color: #f8fbff;
+            padding: 25px 20px;
+            border-right: 1px solid #e1ecff;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .mode-selector {
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            border: 1px solid #e1ecff;
+        }
+        
+        .mode-selector h4 {
+            color: #1a6dcc;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .mode-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .mode-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #d1e3ff;
+            background-color: white;
+            color: #555;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .mode-btn:hover {
+            background-color: #f0f7ff;
+        }
+        
+        .mode-btn.active {
+            background-color: #1a6dcc;
+            color: white;
+            border-color: #1a6dcc;
+        }
+        
+        .menu-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+        
+        .menu-item:hover {
+            background-color: #e6f0ff;
+        }
+        
+        .menu-item.active {
+            background-color: #1a6dcc;
+            color: white;
+        }
+        
+        .menu-item i {
+            font-size: 18px;
+        }
+        
+        .progress-indicator {
+            position: absolute;
+            right: 15px;
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .screen {
+            display: none;
+        }
+        
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        h2 {
+            color: #1a6dcc;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e6f0ff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .welcome-screen p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        .class-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .class-card {
+            background-color: #f8fbff;
+            border-radius: 15px;
+            padding: 25px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .class-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(26, 109, 204, 0.15);
+            border-color: #1a6dcc;
+        }
+        
+        .class-card.selected {
+            background-color: #e6f0ff;
+            border-color: #1a6dcc;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(26, 109, 204, 0.15);
+        }
+        
+        .class-card i {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: #1a6dcc;
+        }
+        
+        .class-card h3 {
+            margin-bottom: 10px;
+            color: #0d4d9c;
+            font-size: 22px;
+        }
+        
+        .class-info {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .subject-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .subject-card {
+            background-color: #f8fbff;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(26, 109, 204, 0.1);
+            border-color: #1a6dcc;
+        }
+        
+        .subject-card i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #1a6dcc;
+        }
+        
+        .subject-card h3 {
+            margin-bottom: 10px;
+            color: #0d4d9c;
+        }
+        
+        .subject-info {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .timer-box {
+            background-color: #f0f7ff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 1px solid #d1e3ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .timer-section {
+            flex: 1;
+        }
+        
+        .timer {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a6dcc;
+            margin: 10px 0;
+        }
+        
+        .question-counter {
+            font-size: 16px;
+            color: #666;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e1ecff;
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #1a6dcc;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .question-box {
+            background-color: #f8fbff;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #1a6dcc;
+        }
+        
+        .question-text {
+            font-size: 18px;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        
+        .option {
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid #e1ecff;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .option:hover {
+            background-color: #f0f7ff;
+        }
+        
+        .option.selected {
+            background-color: #e6f0ff;
+            border-color: #1a6dcc;
+        }
+        
+        .option.correct {
+            background-color: #e8f5e9;
+            border-color: #4CAF50;
+        }
+        
+        .option.incorrect {
+            background-color: #ffebee;
+            border-color: #f44336;
+        }
+        
+        .option-label {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #e6f0ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #1a6dcc;
+            flex-shrink: 0;
+        }
+        
+        .option.selected .option-label {
+            background-color: #1a6dcc;
+            color: white;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            background-color: #1a6dcc;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        button:hover {
+            background-color: #0d4d9c;
+            transform: translateY(-2px);
+        }
+        
+        button.secondary {
+            background-color: #f0f7ff;
+            color: #1a6dcc;
+        }
+        
+        button.secondary:hover {
+            background-color: #e1ecff;
+        }
+        
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .result-summary {
+            background-color: #f8fbff;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .score-display {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(#4CAF50 0% 70%, #ff9800 70% 85%, #f44336 85% 100%);
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .score-inner {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #1a6dcc;
+        }
+        
+        .subject-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .subject-result {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .subject-result i {
+            font-size: 30px;
+            margin-bottom: 15px;
+            color: #1a6dcc;
+        }
+        
+        .result-details {
+            margin-top: 30px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid #e6f0ff;
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .correct {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .incorrect {
+            color: #f44336;
+            font-weight: bold;
+        }
+        
+        .skipped {
+            color: #ff9800;
+            font-weight: bold;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+            border-top: 1px solid #e1ecff;
+            margin-top: 30px;
+        }
+        
+        .instructions {
+            background-color: #f8fbff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: #1a6dcc;
+        }
+        
+        .instructions ul {
+            margin-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        .name-input-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 400px;
+        }
+        
+        .name-input-screen h2 {
+            margin-bottom: 30px;
+        }
+        
+        .name-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #d1e3ff;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .name-input:focus {
+            outline: none;
+            border-color: #1a6dcc;
+        }
+        
+        .question-numbers {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+        
+        .question-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border: 2px solid #e1ecff;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        
+        .question-number:hover {
+            background-color: #f0f7ff;
+        }
+        
+        .question-number.answered {
+            background-color: #e6f0ff;
+            border-color: #1a6dcc;
+            color: #1a6dcc;
+        }
+        
+        .question-number.current {
+            background-color: #1a6dcc;
+            color: white;
+            border-color: #1a6dcc;
+        }
+        
+        .question-number.skipped {
+            background-color: #fff3e0;
+            border-color: #ff9800;
+            color: #ff9800;
+        }
+        
+        .student-name-display {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .assistant-panel {
+            background-color: #f0f7ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 25px;
+            border-left: 5px solid #ff9800;
+            display: none;
+        }
+        
+        .assistant-panel.show {
+            display: block;
+            animation: slideIn 0.5s;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .assistant-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: #0d4d9c;
+        }
+        
+        .assistant-header i {
+            font-size: 24px;
+            color: #ff9800;
+        }
+        
+        .assistant-content {
+            line-height: 1.7;
+        }
+        
+        .hint-btn {
+            background-color: #ff9800;
+            margin-top: 15px;
+        }
+        
+        .hint-btn:hover {
+            background-color: #e68900;
+        }
+        
+        .class-progress {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e1ecff;
+        }
+        
+        .progress-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .progress-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a6dcc;
+        }
+        
+        .progress-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e1ecff;
+            }
+            
+            .subject-list, .class-selection {
+                grid-template-columns: 1fr;
+            }
+            
+            .timer-box {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .question-numbers {
+                max-height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-graduation-cap logo"></i> Simulasi TKA dengan Asisten Belajar</h1>
+            <p>Persiapkan diri menghadapi Tes Kompetensi Akademik dengan bimbingan asisten virtual</p>
+            <div class="student-info" id="student-info" style="display: none;">
+                <i class="fas fa-user"></i> Nama: <span id="student-name-display">-</span> | 
+                <i class="fas fa-graduation-cap"></i> Kelas: <span id="student-class-display">-</span>
+            </div>
+        </header>
+        
+        <div class="app-container">
+            <div class="sidebar" id="sidebar" style="display: none;">
+                <div class="mode-selector">
+                    <h4><i class="fas fa-cogs"></i> Mode Belajar</h4>
+                    <div class="mode-buttons">
+                        <div class="mode-btn active" data-mode="simulation">
+                            <i class="fas fa-clock"></i> Simulasi
+                        </div>
+                        <div class="mode-btn" data-mode="learning">
+                            <i class="fas fa-chalkboard-teacher"></i> Belajar
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item active" data-screen="welcome">
+                    <i class="fas fa-home"></i> Beranda
+                </div>
+                <div class="menu-item" data-screen="matematika">
+                    <i class="fas fa-calculator"></i> Matematika
+                    <div class="progress-indicator" id="matematika-progress-indicator">0/15</div>
+                </div>
+                <div class="menu-item" data-screen="ipa">
+                    <i class="fas fa-flask"></i> IPA
+                    <div class="progress-indicator" id="ipa-progress-indicator">0/15</div>
+                </div>
+                <div class="menu-item" data-screen="bahasa-indonesia">
+                    <i class="fas fa-book"></i> Bahasa Indonesia
+                    <div class="progress-indicator" id="bahasa-indonesia-progress-indicator">0/15</div>
+                </div>
+                <div class="menu-item" data-screen="english">
+                    <i class="fas fa-language"></i> Bahasa Inggris
+                    <div class="progress-indicator" id="english-progress-indicator">0/15</div>
+                </div>
+                <div class="menu-item" data-screen="results">
+                    <i class="fas fa-chart-bar"></i> Hasil & Nilai
+                </div>
+            </div>
+            
+            <div class="main-content">
+                <!-- Layar Input Nama -->
+                <div class="screen active" id="name-input">
+                    <div class="name-input-screen">
+                        <h2><i class="fas fa-user-graduate"></i> Masukkan Nama Anda</h2>
+                        <p>Sebelum memulai simulasi TKA, silakan masukkan nama Anda terlebih dahulu.</p>
+                        
+                        <input type="text" class="name-input" id="student-name" placeholder="Masukkan nama lengkap Anda" maxlength="50">
+                        
+                        <button id="start-app">
+                            <i class="fas fa-play"></i> Lanjutkan
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Layar Pilih Kelas -->
+                <div class="screen" id="class-selection">
+                    <h2><i class="fas fa-graduation-cap"></i> Pilih Tingkat Kelas</h2>
+                    <p>Hai, <span id="class-selection-name"></span>! Silakan pilih tingkat kelas yang sesuai dengan Anda.</p>
+                    
+                    <div class="class-selection">
+                        <div class="class-card" data-class="6sd">
+                            <i class="fas fa-child"></i>
+                            <h3>Kelas 6 SD</h3>
+                            <p class="class-info">Materi dasar Matematika, IPA, Bahasa Indonesia</p>
+                            <div class="progress-label">15 soal per pelajaran</div>
+                        </div>
+                        
+                        <div class="class-card" data-class="2smp">
+                            <i class="fas fa-user-graduate"></i>
+                            <h3>Kelas 2 SMP</h3>
+                            <p class="class-info">Materi menengah dengan tambahan Bahasa Inggris</p>
+                            <div class="progress-label">15 soal per pelajaran</div>
+                        </div>
+                        
+                        <div class="class-card" data-class="3smp">
+                            <i class="fas fa-user-graduate"></i>
+                            <h3>Kelas 3 SMP</h3>
+                            <p class="class-info">Materi lanjutan untuk persiapan ujian</p>
+                            <div class="progress-label">15 soal per pelajaran</div>
+                        </div>
+                    </div>
+                    
+                    <div class="navigation">
+                        <button class="secondary" id="back-to-name">
+                            <i class="fas fa-arrow-left"></i> Kembali
+                        </button>
+                        <button id="confirm-class">
+                            <i class="fas fa-check"></i> Konfirmasi Pilihan
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Layar Selamat Datang -->
+                <div class="screen" id="welcome">
+                    <h2><i class="fas fa-door-open"></i> Selamat Datang, <span id="welcome-name"></span></h2>
+                    <p>Hai, <span id="welcome-name2"></span>! Anda berada di <strong id="welcome-class"></strong>. 
+                    Aplikasi ini akan membantu kamu mempersiapkan diri menghadapi Tes Kompetensi Akademik (TKA).</p>
+                    
+                    <div class="instructions">
+                        <h3><i class="fas fa-info-circle"></i> Petunjuk Penggunaan:</h3>
+                        <ul>
+                            <li>Pilih mata pelajaran yang ingin kamu pelajari</li>
+                            <li>Setiap tes terdiri dari <strong>15 soal</strong> pilihan ganda</li>
+                            <li>Mode <strong>Simulasi</strong>: Tes dengan timer seperti ujian sesungguhnya</li>
+                            <li>Mode <strong>Belajar</strong>: Dapatkan bantuan asisten dan pembahasan soal</li>
+                            <li>Jawaban bisa diubah selama tes masih berlangsung</li>
+                            <li>Hasil akan ditampilkan setelah tes selesai</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="class-progress">
+                        <div class="progress-item">
+                            <div class="progress-value" id="total-progress">0%</div>
+                            <div class="progress-label">Total Progress</div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-value" id="average-score">0</div>
+                            <div class="progress-label">Rata-rata Nilai</div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-value" id="completed-tests">0</div>
+                            <div class="progress-label">Tes Selesai</div>
+                        </div>
+                    </div>
+                    
+                    <p>Silakan pilih mata pelajaran yang ingin kamu kerjakan:</p>
+                    
+                    <div class="subject-list" id="subject-list">
+                        <!-- Daftar mata pelajaran akan diisi oleh JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Layar Matematika -->
+                <div class="screen" id="matematika">
+                    <h2><i class="fas fa-calculator"></i> Tes Matematika</h2>
+                    
+                    <div class="timer-box">
+                        <div class="timer-section">
+                            <div>Waktu Tersisa:</div>
+                            <div class="timer" id="matematika-timer">30:00</div>
+                            <div class="question-counter">Soal <span id="matematika-current">1</span> dari 15</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="matematika-progress"></div>
+                            </div>
+                        </div>
+                        <div class="question-numbers" id="matematika-numbers">
+                            <!-- Nomor soal akan diisi oleh JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="question-box">
+                        <div class="question-text" id="matematika-question"></div>
+                        
+                        <div class="options" id="matematika-options">
+                            <!-- Opsi akan diisi oleh JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="assistant-panel" id="matematika-assistant">
+                        <div class="assistant-header">
+                            <i class="fas fa-robot"></i>
+                            <h4>Asisten Matematika</h4>
+                        </div>
+                        <div class="assistant-content" id="matematika-assistant-content">
+                            <!-- Konten asisten akan diisi oleh JavaScript -->
+                        </div>
+                        <button class="hint-btn" id="matematika-hint">
+                            <i class="fas fa-lightbulb"></i> Berikan Petunjuk
+                        </button>
+                    </div>
+                    
+                    <div class="navigation">
+                        <button class="secondary" id="matematika-prev">
+                            <i class="fas fa-arrow-left"></i> Sebelumnya
+                        </button>
+                        <div>
+                            <button class="secondary" id="matematika-skip">
+                                Lewati <i class="fas fa-forward"></i>
+                            </button>
+                            <button id="matematika-next">
+                                Berikutnya <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Layar IPA -->
+                <div class="screen" id="ipa">
+                    <h2><i class="fas fa-flask"></i> Tes IPA</h2>
+                    
+                    <div class="timer-box">
+                        <div class="timer-section">
+                            <div>Waktu Tersisa:</div>
+                            <div class="timer" id="ipa-timer">30:00</div>
+                            <div class="question-counter">Soal <span id="ipa-current">1</span> dari 15</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="ipa-progress"></div>
+                            </div>
+                        </div>
+                        <div class="question-numbers" id="ipa-numbers">
+                            <!-- Nomor soal akan diisi oleh JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="question-box">
+                        <div class="question-text" id="ipa-question"></div>
+                        
+                        <div class="options" id="ipa-options">
+                            <!-- Opsi akan diisi oleh JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="assistant-panel" id="ipa-assistant">
+                        <div class="assistant-header">
+                            <i class="fas fa-robot"></i>
+                            <h4>Asisten IPA</h4>
+                        </div>
+                        <div class="assistant-content" id="ipa-assistant-content">
+                            <!-- Konten asisten akan diisi oleh JavaScript -->
+                        </div>
+                        <button class="hint-btn" id="ipa-hint">
+                            <i class="fas fa-lightbulb"></i> Berikan Petunjuk
+                        </button>
+                    </div>
+                    
+                    <div class="navigation">
+                        <button class="secondary" id="ipa-prev">
+                            <i class="fas fa-arrow-left"></i> Sebelumnya
+                        </button>
+                        <div>
+                            <button class="secondary" id="ipa-skip">
+                                Lewati <i class="fas fa-forward"></i>
+                            </button>
+                            <button id="ipa-next">
+                                Berikutnya <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Layar Bahasa Indonesia -->
+                <div class="screen" id="bahasa-indonesia">
+                    <h2><i class="fas fa-book"></i> Tes Bahasa Indonesia</h2>
+                    
+                    <div class="timer-box">
+                        <div class="timer-section">
+                            <div>Waktu Tersisa:</div>
+                            <div class="timer" id="bahasa-indonesia-timer">30:00</div>
+                            <div class="question-counter">Soal <span id="bahasa-indonesia-current">1</span> dari 15</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="bahasa-indonesia-progress"></div>
+                            </div>
+                        </div>
+                        <div class="question-numbers" id="bahasa-indonesia-numbers">
+                            <!-- Nomor soal akan diisi oleh JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="question-box">
+                        <div class="question-text" id="bahasa-indonesia-question"></div>
+                        
+                        <div class="options" id="bahasa-indonesia-options">
+                            <!-- Opsi akan diisi oleh JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="assistant-panel" id="bahasa-indonesia-assistant">
+                        <div class="assistant-header">
+                            <i class="fas fa-robot"></i>
+                            <h4>Asisten Bahasa Indonesia</h4>
+                        </div>
+                        <div class="assistant-content" id="bahasa-indonesia-assistant-content">
+                            <!-- Konten asisten akan diisi oleh JavaScript -->
+                        </div>
+                        <button class="hint-btn" id="bahasa-indonesia-hint">
+                            <i class="fas fa-lightbulb"></i> Berikan Petunjuk
+                        </button>
+                    </div>
+                    
+                    <div class="navigation">
+                        <button class="secondary" id="bahasa-indonesia-prev">
+                            <i class="fas fa-arrow-left"></i> Sebelumnya
+                        </button>
+                        <div>
+                            <button class="secondary" id="bahasa-indonesia-skip">
+                                Lewati <i class="fas fa-forward"></i>
+                            </button>
+                            <button id="bahasa-indonesia-next">
+                                Berikutnya <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Layar Bahasa Inggris -->
+                <div class="screen" id="english">
+                    <h2><i class="fas fa-language"></i> Tes Bahasa Inggris</h2>
+                    
+                    <div class="timer-box">
+                        <div class="timer-section">
+                            <div>Waktu Tersisa:</div>
+                            <div class="timer" id="english-timer">30:00</div>
+                            <div class="question-counter">Soal <span id="english-current">1</span> dari 15</div>
+                            <div class="progress-bar">
+                                <div class="progress" id="english-progress"></div>
+                            </div>
+                        </div>
+                        <div class="question-numbers" id="english-numbers">
+                            <!-- Nomor soal akan diisi oleh JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="question-box">
+                        <div class="question-text" id="english-question"></div>
+                        
+                        <div class="options" id="english-options">
+                            <!-- Opsi akan diisi oleh JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="assistant-panel" id="english-assistant">
+                        <div class="assistant-header">
+                            <i class="fas fa-robot"></i>
+                            <h4>English Assistant</h4>
+                        </div>
+                        <div class="assistant-content" id="english-assistant-content">
+                            <!-- Konten asisten akan diisi oleh JavaScript -->
+                        </div>
+                        <button class="hint-btn" id="english-hint">
+                            <i class="fas fa-lightbulb"></i> Give a Hint
+                        </button>
+                    </div>
+                    
+                    <div class="navigation">
+                        <button class="secondary" id="english-prev">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <div>
+                            <button class="secondary" id="english-skip">
+                                Skip <i class="fas fa-forward"></i>
+                            </button>
+                            <button id="english-next">
+                                Next <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Layar Hasil -->
+                <div class="screen" id="results">
+                    <h2><i class="fas fa-chart-bar"></i> Hasil Simulasi TKA</h2>
+                    
+                    <div class="result-summary">
+                        <p><strong>Nama:</strong> <span id="result-name"></span></p>
+                        <p><strong>Kelas:</strong> <span id="result-class"></span></p>
+                        <p><strong>Tanggal:</strong> <span id="result-date"></span></p>
+                        <p><strong>Mode:</strong> <span id="result-mode"></span></p>
+                        
+                        <div class="score-display">
+                            <div class="score-circle">
+                                <div class="score-inner">
+                                    <span id="total-score">0</span>
+                                </div>
+                            </div>
+                            <h3>Skor Total: <span id="score-text">0</span>/100</h3>
+                            <p id="score-message"></p>
+                        </div>
+                        
+                        <div class="subject-results" id="subject-results">
+                            <!-- Hasil per mata pelajaran akan diisi oleh JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="result-details">
+                        <h3>Detail Jawaban:</h3>
+                        <div id="results-details">
+                            <!-- Detail hasil akan ditampilkan di sini -->
+                        </div>
+                    </div>
+                    
+                    <div class="navigation">
+                        <button class="secondary" id="restart-test">
+                            <i class="fas fa-redo"></i> Tes Ulang
+                        </button>
+                        <button id="back-to-home">
+                            <i class="fas fa-home"></i> Kembali ke Beranda
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 Simulasi TKA dengan Asisten Belajar • Aplikasi ini untuk latihan mandiri</p>
+            <p>Disusun berdasarkan materi pelajaran sesuai kurikulum nasional</p>
+        </footer>
+    </div>
+
+    <script>
+        // Data soal untuk setiap kelas dan mata pelajaran
+        const questionsData = {
+            "6sd": {
+                matematika: [
+                    {
+                        question: "Hasil dari 125 + 75 × 2 adalah...",
+                        options: ["400", "275", "325", "200"],
+                        answer: 1,
+                        explanation: "Perkalian dikerjakan terlebih dahulu: 75 × 2 = 150, kemudian 125 + 150 = 275"
+                    },
+                    {
+                        question: "Faktorisasi prima dari 36 adalah...",
+                        options: ["2² × 3²", "2 × 3²", "2² × 3", "2 × 3³"],
+                        answer: 0,
+                        explanation: "36 = 2 × 18 = 2 × 2 × 9 = 2 × 2 × 3 × 3 = 2² × 3²"
+                    },
+                    {
+                        question: "KPK dari 8 dan 12 adalah...",
+                        options: ["16", "24", "32", "48"],
+                        answer: 1,
+                        explanation: "Kelipatan 8: 8, 16, 24, 32... Kelipatan 12: 12, 24, 36... KPK = 24"
+                    },
+                    {
+                        question: "Sebuah segitiga memiliki alas 10 cm dan tinggi 6 cm. Luas segitiga tersebut adalah...",
+                        options: ["30 cm²", "60 cm²", "16 cm²", "32 cm²"],
+                        answer: 0,
+                        explanation: "Luas segitiga = ½ × alas × tinggi = ½ × 10 × 6 = 30 cm²"
+                    },
+                    {
+                        question: "Nilai dari 2³ adalah...",
+                        options: ["6", "8", "9", "4"],
+                        answer: 1,
+                        explanation: "2³ berarti 2 × 2 × 2 = 8"
+                    },
+                    {
+                        question: "Urutan pecahan dari yang terkecil: 1/3, 1/2, 2/5, 3/4 adalah...",
+                        options: ["1/3, 2/5, 1/2, 3/4", "1/2, 1/3, 2/5, 3/4", "1/3, 1/2, 2/5, 3/4", "3/4, 1/2, 2/5, 1/3"],
+                        answer: 0,
+                        explanation: "Ubah ke desimal: 1/3 = 0.33, 2/5 = 0.4, 1/2 = 0.5, 3/4 = 0.75"
+                    },
+                    {
+                        question: "Hasil dari 3,5 × 2 adalah...",
+                        options: ["6", "7", "6.5", "7.5"],
+                        answer: 1,
+                        explanation: "3,5 × 2 = 7 (tiga koma lima dikali dua sama dengan tujuh)"
+                    },
+                    {
+                        question: "Keliling persegi dengan panjang sisi 8 cm adalah...",
+                        options: ["16 cm", "24 cm", "32 cm", "64 cm"],
+                        answer: 2,
+                        explanation: "Keliling persegi = 4 × sisi = 4 × 8 = 32 cm"
+                    },
+                    {
+                        question: "Bilangan romawi untuk 27 adalah...",
+                        options: ["XXV", "XXVII", "XXII", "XXX"],
+                        answer: 1,
+                        explanation: "XX = 20, VII = 7, jadi XXVII = 27"
+                    },
+                    {
+                        question: "Hasil dari 5² + 3³ adalah...",
+                        options: ["34", "52", "16", "28"],
+                        answer: 0,
+                        explanation: "5² = 25, 3³ = 27, 25 + 27 = 52"
+                    },
+                    {
+                        question: "Sebuah kubus memiliki volume 64 cm³. Panjang rusuk kubus tersebut adalah...",
+                        options: ["2 cm", "4 cm", "8 cm", "16 cm"],
+                        answer: 1,
+                        explanation: "Volume kubus = s³, jadi s = ∛64 = 4 cm"
+                    },
+                    {
+                        question: "Hasil dari 2/3 + 1/6 adalah...",
+                        options: ["3/9", "5/6", "1/2", "3/6"],
+                        answer: 1,
+                        explanation: "2/3 = 4/6, 4/6 + 1/6 = 5/6"
+                    },
+                    {
+                        question: "Bentuk desimal dari 3/5 adalah...",
+                        options: ["0.3", "0.5", "0.6", "0.8"],
+                        answer: 2,
+                        explanation: "3/5 = 0.6 (tiga per lima sama dengan nol koma enam)"
+                    },
+                    {
+                        question: "FPB dari 18 dan 24 adalah...",
+                        options: ["3", "6", "9", "12"],
+                        answer: 1,
+                        explanation: "Faktor 18: 1,2,3,6,9,18. Faktor 24: 1,2,3,4,6,8,12,24. FPB = 6"
+                    },
+                    {
+                        question: "Nilai dari 20% dari 150 adalah...",
+                        options: ["20", "30", "40", "50"],
+                        answer: 1,
+                        explanation: "20% × 150 = 20/100 × 150 = 0.2 × 150 = 30"
+                    }
+                ],
+                ipa: [
+                    {
+                        question: "Planet terdekat dari matahari adalah...",
+                        options: ["Venus", "Mars", "Merkurius", "Bumi"],
+                        answer: 2,
+                        explanation: "Merkurius adalah planet terkecil dan terdekat dengan matahari"
+                    },
+                    {
+                        question: "Proses fotosintesis pada tumbuhan menghasilkan...",
+                        options: ["Oksigen dan air", "Oksigen dan glukosa", "Karbondioksida dan air", "Karbondioksida dan glukosa"],
+                        answer: 1,
+                        explanation: "Fotosintesis: air + karbondioksida + cahaya → glukosa + oksigen"
+                    },
+                    {
+                        question: "Bagian mata yang berfungsi mengatur banyak sedikitnya cahaya yang masuk adalah...",
+                        options: ["Retina", "Kornea", "Iris", "Lensa"],
+                        answer: 2,
+                        explanation: "Iris mengatur besar kecilnya pupil untuk mengatur cahaya yang masuk"
+                    },
+                    {
+                        question: "Hewan yang mengalami metamorfosis sempurna adalah...",
+                        options: ["Kupu-kupu", "Kecoa", "Belalang", "Jangkrik"],
+                        answer: 0,
+                        explanation: "Kupu-kupu mengalami metamorfosis sempurna: telur → ulat → kepompong → kupu-kupu"
+                    },
+                    {
+                        question: "Enzim yang berfungsi mengubah protein menjadi pepton terdapat di...",
+                        options: ["Mulut", "Lambung", "Usus halus", "Usus besar"],
+                        answer: 1,
+                        explanation: "Lambung menghasilkan enzim pepsin yang mengubah protein menjadi pepton"
+                    },
+                    {
+                        question: "Penyakit yang disebabkan oleh kekurangan vitamin C adalah...",
+                        options: ["Rabun senja", "Beriberi", "Skorbut", "Rakitis"],
+                        answer: 2,
+                        explanation: "Skorbut adalah penyakit akibat kekurangan vitamin C"
+                    },
+                    {
+                        question: "Peristiwa perubahan wujud dari gas menjadi cair disebut...",
+                        options: ["Menguap", "Menyublim", "Mengembun", "Membeku"],
+                        answer: 2,
+                        explanation: "Mengembun adalah perubahan wujud gas menjadi cair"
+                    },
+                    {
+                        question: "Sumber energi alternatif yang berasal dari panas bumi disebut...",
+                        options: ["Biomassa", "Geothermal", "Hidrotermal", "Biofuel"],
+                        answer: 1,
+                        explanation: "Energi geothermal adalah energi panas bumi"
+                    },
+                    {
+                        question: "Bagian bunga yang berfungsi sebagai alat kelamin jantan adalah...",
+                        options: ["Putik", "Benang sari", "Mahkota", "Kelopak"],
+                        answer: 1,
+                        explanation: "Benang sari adalah alat kelamin jantan pada bunga"
+                    },
+                    {
+                        question: "Gerak tumbuhan yang dipengaruhi oleh arah datangnya cahaya disebut...",
+                        options: ["Geotropisme", "Hidrotropisme", "Fototropisme", "Tigmotropisme"],
+                        answer: 2,
+                        explanation: "Fototropisme adalah gerak tumbuhan menuju atau menjauhi cahaya"
+                    },
+                    {
+                        question: "Hewan yang berkembang biak dengan cara bertelur adalah...",
+                        options: ["Kucing", "Anjing", "Ayam", "Sapi"],
+                        answer: 2,
+                        explanation: "Ayam adalah hewan ovipar (bertelur)"
+                    },
+                    {
+                        question: "Zat hijau daun yang berperan dalam fotosintesis disebut...",
+                        options: ["Klorofil", "Kloroplas", "Xantofil", "Karoten"],
+                        answer: 0,
+                        explanation: "Klorofil adalah zat hijau daun yang menangkap energi cahaya"
+                    },
+                    {
+                        question: "Bagian telinga yang berfungsi menangkap gelombang suara adalah...",
+                        options: ["Daun telinga", "Gendang telinga", "Koklea", "Saluran eustachius"],
+                        answer: 0,
+                        explanation: "Daun telinga berfungsi menangkap dan mengumpulkan gelombang suara"
+                    },
+                    {
+                        question: "Penyakit yang disebabkan oleh kekurangan vitamin D adalah...",
+                        options: ["Anemia", "Rakitis", "Beriberi", "Skorbut"],
+                        answer: 1,
+                        explanation: "Rakitis adalah penyakit tulang akibat kekurangan vitamin D"
+                    },
+                    {
+                        question: "Alat pernapasan pada ikan adalah...",
+                        options: ["Paru-paru", "Insang", "Kulit", "Trakea"],
+                        answer: 1,
+                        explanation: "Ikan bernapas dengan insang yang menyerap oksigen dari air"
+                    }
+                ],
+                "bahasa-indonesia": [
+                    {
+                        question: "Kalimat yang menggunakan tanda baca koma (,) dengan tepat adalah...",
+                        options: [
+                            "Ibu membeli, apel jeruk dan mangga",
+                            "Ibu membeli apel, jeruk, dan mangga",
+                            "Ibu, membeli apel jeruk dan mangga",
+                            "Ibu membeli apel jeruk, dan mangga"
+                        ],
+                        answer: 1,
+                        explanation: "Tanda koma digunakan untuk memisahkan item dalam deret: apel, jeruk, dan mangga"
+                    },
+                    {
+                        question: "Kata tanya yang tepat untuk menanyakan alasan adalah...",
+                        options: ["Apa", "Mengapa", "Bagaimana", "Di mana"],
+                        answer: 1,
+                        explanation: "Kata tanya 'mengapa' digunakan untuk menanyakan alasan atau sebab"
+                    },
+                    {
+                        question: "Sinonim dari kata 'rajin' adalah...",
+                        options: ["Malas", "Giat", "Lambat", "Cepat"],
+                        answer: 1,
+                        explanation: "Sinonim rajin adalah giat, tekun, atau bersungguh-sungguh"
+                    },
+                    {
+                        question: "Penggunaan huruf kapital yang benar terdapat pada kalimat...",
+                        options: [
+                            "Ibu pergi ke pasar senen",
+                            "Ibu pergi ke Pasar Senen",
+                            "Ibu pergi ke pasar Senen",
+                            "ibu pergi ke Pasar Senen"
+                        ],
+                        answer: 1,
+                        explanation: "Nama tempat ditulis dengan huruf kapital: Pasar Senen"
+                    },
+                    {
+                        question: "Kalimat yang merupakan opini adalah...",
+                        options: [
+                            "Indonesia merdeka pada 17 Agustus 1945",
+                            "Jakarta adalah ibu kota Indonesia",
+                            "Bali merupakan pulau yang paling indah di Indonesia",
+                            "Gunung Semeru terletak di Jawa Timur"
+                        ],
+                        answer: 2,
+                        explanation: "Kalimat 'Bali merupakan pulau yang paling indah' adalah opini (pendapat pribadi)"
+                    },
+                    {
+                        question: "Imbuhan 'ter-' yang bermakna paling terdapat pada kata...",
+                        options: ["Tertawa", "Terbaik", "Terbawa", "Terjatuh"],
+                        answer: 1,
+                        explanation: "Imbuhan 'ter-' pada 'terbaik' berarti paling (paling baik)"
+                    },
+                    {
+                        question: "Lawan kata (antonim) dari 'awal' adalah...",
+                        options: ["Pertama", "Akhir", "Tengah", "Mulai"],
+                        answer: 1,
+                        explanation: "Antonim awal adalah akhir"
+                    },
+                    {
+                        question: "Kalimat yang menggunakan kata depan 'di' dengan tepat adalah...",
+                        options: [
+                            "Dina pergi di sekolah",
+                            "Buku itu diletakkan diatas meja",
+                            "Kucing itu tidur di bawah meja",
+                            "Mereka bermain di halaman sekolah"
+                        ],
+                        answer: 3,
+                        explanation: "Kata depan 'di' digunakan untuk menunjukkan tempat dan ditulis terpisah"
+                    },
+                    {
+                        question: "Kalimat yang mengandung kata baku adalah...",
+                        options: [
+                            "Saya apresiasi prestasimu",
+                            "Kami mengapresiasi prestasimu",
+                            "Kita harus menghargai prestasi mereka",
+                            "Dia memberikan apresiasi terhadap prestasi kami"
+                        ],
+                        answer: 2,
+                        explanation: "'Menghargai' adalah kata baku, 'apresiasi' adalah serapan dari bahasa asing"
+                    },
+                    {
+                        question: "Paragraf yang termasuk jenis narasi adalah paragraf yang...",
+                        options: [
+                            "Menjelaskan proses terjadinya sesuatu",
+                            "Menggambarkan suatu objek dengan detail",
+                            "Menceritakan suatu peristiwa atau kejadian",
+                            "Memaparkan pendapat tentang suatu masalah"
+                        ],
+                        answer: 2,
+                        explanation: "Narasi adalah jenis paragraf yang menceritakan suatu peristiwa atau kejadian"
+                    },
+                    {
+                        question: "Kata yang penulisannya benar adalah...",
+                        options: ["Nasehat", "Naschat", "Nasihat", "Nasehat"],
+                        answer: 2,
+                        explanation: "Penulisan yang benar adalah 'nasihat' menurut KBBI"
+                    },
+                    {
+                        question: "Kalimat yang menggunakan ejaan yang tepat adalah...",
+                        options: [
+                            "Ibu membeli obat di apotik",
+                            "Kakak pergi ke sekolah naik sepedah",
+                            "Adik sedang belajar matematika",
+                            "Ayah membaca koran setiap pagi"
+                        ],
+                        answer: 3,
+                        explanation: "Kalimat 'Ayah membaca koran setiap pagi' sudah menggunakan ejaan yang benar"
+                    },
+                    {
+                        question: "Kalimat yang menggunakan kata 'kemarin' dengan tepat adalah...",
+                        options: [
+                            "Saya akan pergi kemarin",
+                            "Besok adalah hari kemarin",
+                            "Kemarin saya pergi ke sekolah",
+                            "Saya sedang pergi kemarin"
+                        ],
+                        answer: 2,
+                        explanation: "'Kemarin' menunjukkan waktu lampau, jadi harus dengan kata kerja lampau"
+                    },
+                    {
+                        question: "Kata yang tidak baku adalah...",
+                        options: ["Ijazah", "Ijazah", "Ijasah", "Izajah"],
+                        answer: 2,
+                        explanation: "'Ijasah' adalah penulisan tidak baku, yang baku adalah 'ijazah'"
+                    },
+                    {
+                        question: "Kalimat yang menggunakan tanda seru (!) dengan tepat adalah...",
+                        options: [
+                            "Wah, indah sekali pemandangan ini!",
+                            "Wah indah sekali pemandangan ini",
+                            "Wah! indah sekali pemandangan ini",
+                            "Wah indah sekali pemandangan ini!"
+                        ],
+                        answer: 0,
+                        explanation: "Tanda seru digunakan setelah seruan dan kalimat lengkap"
+                    }
+                ],
+                "english": [
+                    {
+                        question: "What is the English word for 'buku'?",
+                        options: ["Book", "Pen", "Table", "Chair"],
+                        answer: 0,
+                        explanation: "The English word for 'buku' is 'book'"
+                    },
+                    {
+                        question: "The opposite of 'big' is...",
+                        options: ["Large", "Small", "Tall", "Wide"],
+                        answer: 1,
+                        explanation: "The opposite (antonym) of 'big' is 'small'"
+                    },
+                    {
+                        question: "Complete the sentence: I ___ a student.",
+                        options: ["is", "am", "are", "be"],
+                        answer: 1,
+                        explanation: "With 'I' we use 'am': I am a student"
+                    },
+                    {
+                        question: "What is the plural form of 'child'?",
+                        options: ["Childs", "Children", "Childes", "Child's"],
+                        answer: 1,
+                        explanation: "The plural of 'child' is 'children' (irregular plural)"
+                    },
+                    {
+                        question: "Which word is a color?",
+                        options: ["Apple", "Blue", "Dog", "Run"],
+                        answer: 1,
+                        explanation: "'Blue' is a color. The others are fruit, animal, and verb"
+                    },
+                    {
+                        question: "How do you say 'terima kasih' in English?",
+                        options: ["Hello", "Goodbye", "Thank you", "Sorry"],
+                        answer: 2,
+                        explanation: "'Terima kasih' in English is 'thank you'"
+                    },
+                    {
+                        question: "Which sentence is correct?",
+                        options: [
+                            "She go to school",
+                            "She goes to school",
+                            "She going to school",
+                            "She to go school"
+                        ],
+                        answer: 1,
+                        explanation: "With 'she' we add 's' to the verb: She goes to school"
+                    },
+                    {
+                        question: "What is the English word for 'ibu'?",
+                        options: ["Father", "Mother", "Sister", "Brother"],
+                        answer: 1,
+                        explanation: "The English word for 'ibu' is 'mother'"
+                    },
+                    {
+                        question: "Which is a number?",
+                        options: ["Red", "Five", "Jump", "Happy"],
+                        answer: 1,
+                        explanation: "'Five' is a number (5). The others are color, verb, and adjective"
+                    },
+                    {
+                        question: "Complete: My name ___ Budi.",
+                        options: ["is", "am", "are", "be"],
+                        answer: 0,
+                        explanation: "With 'name' we use 'is': My name is Budi"
+                    },
+                    {
+                        question: "How do you say 'selamat pagi' in English?",
+                        options: ["Good morning", "Good afternoon", "Good evening", "Good night"],
+                        answer: 0,
+                        explanation: "'Selamat pagi' in English is 'Good morning'"
+                    },
+                    {
+                        question: "Which is an animal?",
+                        options: ["Table", "Cat", "Book", "Pen"],
+                        answer: 1,
+                        explanation: "'Cat' is an animal. The others are furniture and objects"
+                    },
+                    {
+                        question: "What is the English word for 'sekolah'?",
+                        options: ["Market", "School", "House", "Park"],
+                        answer: 1,
+                        explanation: "The English word for 'sekolah' is 'school'"
+                    },
+                    {
+                        question: "Complete: They ___ playing football.",
+                        options: ["is", "am", "are", "be"],
+                        answer: 2,
+                        explanation: "With 'they' we use 'are': They are playing football"
+                    },
+                    {
+                        question: "Which is a fruit?",
+                        options: ["Car", "Apple", "Dog", "Table"],
+                        answer: 1,
+                        explanation: "'Apple' is a fruit. The others are vehicle, animal, and furniture"
+                    }
+                ]
+            },
+            "2smp": {
+                matematika: [
+                    {
+                        question: "Hasil dari (2x + 3)(x - 4) adalah...",
+                        options: ["2x² - 5x - 12", "2x² + 5x - 12", "2x² - 5x + 12", "2x² + 5x + 12"],
+                        answer: 0,
+                        explanation: "(2x + 3)(x - 4) = 2x² - 8x + 3x - 12 = 2x² - 5x - 12"
+                    },
+                    {
+                        question: "Nilai x dari persamaan 3x - 7 = 14 adalah...",
+                        options: ["5", "6", "7", "8"],
+                        answer: 2,
+                        explanation: "3x - 7 = 14 → 3x = 14 + 7 → 3x = 21 → x = 7"
+                    },
+                    {
+                        question: "Bentuk sederhana dari √72 adalah...",
+                        options: ["6√2", "3√8", "8√3", "2√18"],
+                        answer: 0,
+                        explanation: "√72 = √(36×2) = √36 × √2 = 6√2"
+                    },
+                    {
+                        question: "Gradien garis dengan persamaan y = 2x - 5 adalah...",
+                        options: ["-5", "2", "-2", "5"],
+                        answer: 1,
+                        explanation: "Pada persamaan y = mx + c, m adalah gradien. Jadi gradien = 2"
+                    },
+                    {
+                        question: "Himpunan penyelesaian dari x² - 5x + 6 = 0 adalah...",
+                        options: ["{2, 3}", "{-2, -3}", "{1, 6}", "{-1, -6}"],
+                        answer: 0,
+                        explanation: "x² - 5x + 6 = (x-2)(x-3) = 0 → x=2 atau x=3"
+                    },
+                    {
+                        question: "Nilai dari log 100 adalah...",
+                        options: ["1", "2", "10", "100"],
+                        answer: 1,
+                        explanation: "log 100 = log 10² = 2 log 10 = 2 × 1 = 2"
+                    },
+                    {
+                        question: "Panjang sisi miring segitiga siku-siku dengan sisi 6 cm dan 8 cm adalah...",
+                        options: ["10 cm", "12 cm", "14 cm", "16 cm"],
+                        answer: 0,
+                        explanation: "Teorema Pythagoras: √(6² + 8²) = √(36+64) = √100 = 10 cm"
+                    },
+                    {
+                        question: "Volume bola dengan jari-jari 7 cm adalah... (π = 22/7)",
+                        options: ["1437.33 cm³", "1796.33 cm³", "2155.33 cm³", "2514.33 cm³"],
+                        answer: 0,
+                        explanation: "V = 4/3 π r³ = 4/3 × 22/7 × 343 = 1437.33 cm³"
+                    },
+                    {
+                        question: "Nilai dari sin 30° adalah...",
+                        options: ["1/2", "√3/2", "√2/2", "1"],
+                        answer: 0,
+                        explanation: "sin 30° = 1/2 (nilai trigonometri dasar)"
+                    },
+                    {
+                        question: "Jika f(x) = 2x + 3, maka f(4) = ...",
+                        options: ["8", "9", "10", "11"],
+                        answer: 3,
+                        explanation: "f(4) = 2(4) + 3 = 8 + 3 = 11"
+                    },
+                    {
+                        question: "Jumlah sudut dalam segitiga adalah...",
+                        options: ["90°", "180°", "270°", "360°"],
+                        answer: 1,
+                        explanation: "Jumlah sudut dalam segitiga selalu 180°"
+                    },
+                    {
+                        question: "Fungsi kuadrat y = x² - 4x + 3 memotong sumbu x di titik...",
+                        options: ["(1,0) dan (3,0)", "(-1,0) dan (3,0)", "(1,0) dan (-3,0)", "(-1,0) dan (-3,0)"],
+                        answer: 0,
+                        explanation: "x² - 4x + 3 = 0 → (x-1)(x-3)=0 → x=1 atau x=3"
+                    },
+                    {
+                        question: "Nilai dari 2⁻³ adalah...",
+                        options: ["-8", "-6", "1/8", "1/6"],
+                        answer: 2,
+                        explanation: "2⁻³ = 1/2³ = 1/8"
+                    },
+                    {
+                        question: "Panjang diagonal sisi kubus dengan rusuk 10 cm adalah...",
+                        options: ["10√2 cm", "10√3 cm", "20 cm", "10 cm"],
+                        answer: 0,
+                        explanation: "Diagonal sisi = s√2 = 10√2 cm"
+                    },
+                    {
+                        question: "Rata-rata dari data 5, 7, 8, 6, 9 adalah...",
+                        options: ["6", "6.5", "7", "7.5"],
+                        answer: 2,
+                        explanation: "(5+7+8+6+9)/5 = 35/5 = 7"
+                    }
+                ],
+                ipa: [
+                    {
+                        question: "Hukum kekekalan energi menyatakan bahwa energi...",
+                        options: ["Dapat diciptakan", "Dapat dimusnahkan", "Tidak dapat diciptakan atau dimusnahkan", "Hanya dapat berubah bentuk"],
+                        answer: 2,
+                        explanation: "Hukum kekekalan energi: energi tidak dapat diciptakan atau dimusnahkan, hanya berubah bentuk"
+                    },
+                    {
+                        question: "Gerak lurus berubah beraturan (GLBB) memiliki...",
+                        options: ["Kecepatan tetap", "Percepatan tetap", "Kecepatan nol", "Percepatan nol"],
+                        answer: 1,
+                        explanation: "GLBB memiliki percepatan tetap (konstan)"
+                    },
+                    {
+                        question: "Enzim yang berfungsi mengubah amilum menjadi maltosa adalah...",
+                        options: ["Pepsin", "Amilase", "Lipase", "Tripsin"],
+                        answer: 1,
+                        explanation: "Enzim amilase mengubah amilum (pati) menjadi maltosa"
+                    },
+                    {
+                        question: "Sistem peredaran darah tertutup ditemukan pada...",
+                        options: ["Serangga", "Cacing tanah", "Manusia", "Udang"],
+                        answer: 2,
+                        explanation: "Sistem peredaran darah tertutup: darah mengalir dalam pembuluh darah (vertebrata termasuk manusia)"
+                    },
+                    {
+                        question: "Proses pembuatan makanan pada tumbuhan dengan bantuan cahaya disebut...",
+                        options: ["Respirasi", "Fotosintesis", "Evaporasi", "Transpirasi"],
+                        answer: 1,
+                        explanation: "Fotosintesis adalah proses pembuatan makanan pada tumbuhan dengan bantuan cahaya"
+                    },
+                    {
+                        question: "Hukum Newton I disebut juga hukum...",
+                        options: ["Aksi-reaksi", "Percepatan", "Kelembaman", "Gravitasi"],
+                        answer: 2,
+                        explanation: "Hukum Newton I: hukum kelembaman/inersia"
+                    },
+                    {
+                        question: "Organel sel yang berfungsi sebagai tempat respirasi sel adalah...",
+                        options: ["Inti sel", "Mitokondria", "Ribosom", "Retikulum endoplasma"],
+                        answer: 1,
+                        explanation: "Mitokondria adalah tempat respirasi sel (pusat pembangkit energi)"
+                    },
+                    {
+                        question: "Zat yang dapat menghantarkan listrik dengan baik disebut...",
+                        options: ["Isolator", "Konduktor", "Semikonduktor", "Superkonduktor"],
+                        answer: 1,
+                        explanation: "Konduktor adalah bahan yang dapat menghantarkan listrik dengan baik"
+                    },
+                    {
+                        question: "Penyakit yang disebabkan oleh virus adalah...",
+                        options: ["TBC", "Malaria", "Demam berdarah", "Tifus"],
+                        answer: 2,
+                        explanation: "Demam berdarah disebabkan oleh virus dengue"
+                    },
+                    {
+                        question: "Besi berkarat merupakan contoh perubahan...",
+                        options: ["Fisika", "Kimia", "Biologi", "Alam"],
+                        answer: 1,
+                        explanation: "Besi berkarat (menjadi besi oksida) adalah perubahan kimia"
+                    },
+                    {
+                        question: "Cara perkembangbiakan tumbuhan dengan umbi batang contohnya...",
+                        options: ["Wortel", "Kentang", "Bawang merah", "Jahe"],
+                        answer: 1,
+                        explanation: "Kentang berkembang biak dengan umbi batang"
+                    },
+                    {
+                        question: "Sistem pertahanan tubuh terhadap penyakit disebut sistem...",
+                        options: ["Pencernaan", "Pernapasan", "Imun", "Sirkulasi"],
+                        answer: 2,
+                        explanation: "Sistem imun adalah sistem pertahanan tubuh"
+                    },
+                    {
+                        question: "Pembelahan sel yang menghasilkan sel anak dengan jumlah kromosom setengah dari induk disebut...",
+                        options: ["Mitosis", "Meiosis", "Amitosis", "Sitokinesis"],
+                        answer: 1,
+                        explanation: "Meiosis menghasilkan sel anak dengan kromosom setengah (untuk sel gamet)"
+                    },
+                    {
+                        question: "Gaya tarik menarik antara molekul sejenis disebut...",
+                        options: ["Adhesi", "Kohesi", "Kapilaritas", "Gravitasi"],
+                        answer: 1,
+                        explanation: "Kohesi adalah gaya tarik menarik antara molekul sejenis"
+                    },
+                    {
+                        question: "Alat optik yang menggunakan dua lensa cembung adalah...",
+                        options: ["Lup", "Mikroskop", "Teropong bintang", "Kamera"],
+                        answer: 1,
+                        explanation: "Mikroskop menggunakan dua lensa cembung (okuler dan objektif)"
+                    }
+                ],
+                "bahasa-indonesia": [
+                    {
+                        question: "Kalimat yang menggunakan kata 'apabila' dengan tepat adalah...",
+                        options: [
+                            "Apabila kamu belajar, maka kamu akan pandai",
+                            "Kamu apabila belajar, maka kamu akan pandai",
+                            "Kamu belajar apabila, maka kamu akan pandai",
+                            "Kamu belajar, maka kamu akan pandai apabila"
+                        ],
+                        answer: 0,
+                        explanation: "'Apabila' adalah konjungsi yang digunakan di awal anak kalimat pengandaian"
+                    },
+                    {
+                        question: "Kata yang mengalami peyorasi adalah...",
+                        options: ["Wanita", "Bini", "Perempuan", "Ibu"],
+                        answer: 1,
+                        explanation: "'Bini' mengalami peyorasi (penurunan makna) dibandingkan 'isteri'"
+                    },
+                    {
+                        question: "Kalimat yang menggunakan majas metafora adalah...",
+                        options: [
+                            "Dia bekerja keras seperti semut",
+                            "Raja siang mulai bersinar",
+                            "Suaranya menggelegar bagai halilintar",
+                            "Wajahnya cantik laksana bidadari"
+                        ],
+                        answer: 1,
+                        explanation: "'Raja siang' adalah metafora untuk matahari (perbandingan langsung tanpa kata pembanding)"
+                    },
+                    {
+                        question: "Paragraf yang termasuk eksposisi adalah...",
+                        options: [
+                            "Paragraf yang menceritakan pengalaman pribadi",
+                            "Paragraf yang menggambarkan suatu objek",
+                            "Paragraf yang memaparkan informasi atau pengetahuan",
+                            "Paragraf yang berisi ajakan atau persuasi"
+                        ],
+                        answer: 2,
+                        explanation: "Eksposisi adalah paragraf yang memaparkan informasi, pengetahuan, atau penjelasan"
+                    },
+                    {
+                        question: "Kata serapan dari bahasa Inggris yang penulisannya benar adalah...",
+                        options: ["System", "Sistem", "Sistim", "Sistim"],
+                        answer: 1,
+                        explanation: "Penyerapan yang benar dari 'system' adalah 'sistem' (hilang 'y')"
+                    },
+                    {
+                        question: "Kalimat yang menggunakan konjungsi antarkalimat adalah...",
+                        options: [
+                            "Dia belajar keras sehingga lulus ujian",
+                            "Meskipun hujan, dia tetap pergi",
+                            "Ayah membaca koran sambil minum kopi",
+                            "Dia rajin belajar. Oleh karena itu, dia pandai"
+                        ],
+                        answer: 3,
+                        explanation: "'Oleh karena itu' adalah konjungsi antarkalimat (menghubungkan dua kalimat)"
+                    },
+                    {
+                        question: "Kata yang mengalami ameliorasi adalah...",
+                        options: ["Pramuniaga", "Pelayan", "Pembantu", "Babu"],
+                        answer: 0,
+                        explanation: "'Pramuniaga' mengalami ameliorasi (peningkatan makna) dibandingkan 'pelayan'"
+                    },
+                    {
+                        question: "Kalimat yang menggunakan kata depan 'pada' dengan tepat adalah...",
+                        options: [
+                            "Buku itu berada pada meja",
+                            "Pada hari Senin kita upacara bendera",
+                            "Dia datang pada pukul tujuh",
+                            "Pada musim hujan banyak nyamuk"
+                        ],
+                        answer: 1,
+                        explanation: "'Pada' digunakan untuk menunjukkan waktu tertentu: pada hari Senin"
+                    },
+                    {
+                        question: "Karya sastra yang menceritakan kehidupan seseorang secara lengkap disebut...",
+                        options: ["Cerpen", "Novel", "Biografi", "Otobiografi"],
+                        answer: 2,
+                        explanation: "Biografi adalah karya sastra yang menceritakan kehidupan seseorang"
+                    },
+                    {
+                        question: "Kalimat yang menggunakan diksi yang tepat adalah...",
+                        options: [
+                            "Dia sangat gemar membaca buku",
+                            "Dia sangat hobi membaca buku",
+                            "Dia sangat sukai membaca buku",
+                            "Dia sangat senangi membaca buku"
+                        ],
+                        answer: 0,
+                        explanation: "'Gemar' lebih tepat daripada 'hobi' (kata serapan) dalam konteks formal"
+                    },
+                    {
+                        question: "Unsur intrinsik cerpen yang berkaitan dengan watak pelaku adalah...",
+                        options: ["Tema", "Alur", "Tokoh", "Penokohan"],
+                        answer: 3,
+                        explanation: "Penokohan adalah cara pengarang menggambarkan watak tokoh"
+                    },
+                    {
+                        question: "Kalimat yang menggunakan eufemisme adalah...",
+                        options: [
+                            "Dia sudah meninggal dunia",
+                            "Dia sudah mati",
+                            "Dia sudah wafat",
+                            "Dia sudah berpulang"
+                        ],
+                        answer: 0,
+                        explanation: "'Meninggal dunia' adalah eufemisme (ungkapan halus) untuk 'mati'"
+                    },
+                    {
+                        question: "Jenis karangan yang bertujuan mempengaruhi pembaca adalah...",
+                        options: ["Narasi", "Deskripsi", "Eksposisi", "Argumentasi"],
+                        answer: 3,
+                        explanation: "Argumentasi bertujuan mempengaruhi pembaca dengan alasan dan bukti"
+                    },
+                    {
+                        question: "Kata yang mengalami perluasan makna adalah...",
+                        options: ["Sastra", "Kepala", "Bapak", "Sarjana"],
+                        answer: 2,
+                        explanation: "'Bapak' mengalami perluasan makna (dari ayah kandung menjadi sebutan hormat)"
+                    },
+                    {
+                        question: "Kalimat yang menggunakan pleonasme adalah...",
+                        options: [
+                            "Dia naik ke atas tangga",
+                            "Dia turun ke bawah",
+                            "Mereka saling pukul memukul",
+                            "Semua jawaban benar"
+                        ],
+                        answer: 3,
+                        explanation: "Semua contoh mengandung pleonasme (kata berlebihan): naik-ke atas, turun-ke bawah, saling-pukul memukul"
+                    }
+                ],
+                "english": [
+                    {
+                        question: "She ____ to school every day.",
+                        options: ["go", "goes", "going", "went"],
+                        answer: 1,
+                        explanation: "Simple Present Tense dengan she/he/it: verb + s/es. She goes to school"
+                    },
+                    {
+                        question: "I have ____ English book.",
+                        options: ["a", "an", "the", "-"],
+                        answer: 1,
+                        explanation: "'an' digunakan sebelum kata yang dimulai dengan vowel sound (English dimulai dengan vowel sound /e/)"
+                    },
+                    {
+                        question: "They ____ watching TV now.",
+                        options: ["is", "am", "are", "be"],
+                        answer: 2,
+                        explanation: "Present Continuous: subject + to be + V-ing. They = are"
+                    },
+                    {
+                        question: "What is the past tense of 'go'?",
+                        options: ["goed", "went", "gone", "goes"],
+                        answer: 1,
+                        explanation: "Past tense dari 'go' adalah 'went' (irregular verb)"
+                    },
+                    {
+                        question: "This book is ____ than that one.",
+                        options: ["good", "better", "best", "more good"],
+                        answer: 1,
+                        explanation: "Comparative form dari 'good' adalah 'better' (lebih baik)"
+                    },
+                    {
+                        question: "If I ____ rich, I would buy a big house.",
+                        options: ["am", "was", "were", "be"],
+                        answer: 2,
+                        explanation: "Conditional type 2: If + past tense (were untuk semua subjek), would + V1"
+                    },
+                    {
+                        question: "She ____ her homework yesterday.",
+                        options: ["do", "does", "did", "done"],
+                        answer: 2,
+                        explanation: "Past tense dari 'do' adalah 'did' (yesterday menunjukkan waktu lampau)"
+                    },
+                    {
+                        question: "How ____ money do you have?",
+                        options: ["much", "many", "some", "any"],
+                        answer: 0,
+                        explanation: "'Much' untuk uncountable nouns (money), 'many' untuk countable nouns"
+                    },
+                    {
+                        question: "He is the ____ student in the class.",
+                        options: ["tall", "taller", "tallest", "most tall"],
+                        answer: 2,
+                        explanation: "Superlative form: the + adjective + -est (tall → tallest)"
+                    },
+                    {
+                        question: "I ____ my keys. Can you help me find them?",
+                        options: ["lose", "lost", "have lost", "am losing"],
+                        answer: 2,
+                        explanation: "Present Perfect: have/has + V3. 'have lost' (baru saja kehilangan dan masih berpengaruh)"
+                    },
+                    {
+                        question: "She enjoys ____ novels.",
+                        options: ["read", "reads", "to read", "reading"],
+                        answer: 3,
+                        explanation: "Setelah kata 'enjoy' menggunakan V-ing: enjoys reading"
+                    },
+                    {
+                        question: "____ you like some coffee?",
+                        options: ["Do", "Would", "Will", "Are"],
+                        answer: 1,
+                        explanation: "'Would you like' adalah cara sopan untuk menawarkan sesuatu"
+                    },
+                    {
+                        question: "The cat is sleeping ____ the table.",
+                        options: ["on", "in", "at", "under"],
+                        answer: 3,
+                        explanation: "'Under' berarti di bawah. The cat is sleeping under the table"
+                    },
+                    {
+                        question: "He ____ to Japan three times.",
+                        options: ["has been", "have been", "was", "is"],
+                        answer: 0,
+                        explanation: "Present Perfect untuk pengalaman: has/have + been. He = has"
+                    },
+                    {
+                        question: "This is ____ book. It's not yours.",
+                        options: ["my", "mine", "me", "I"],
+                        answer: 0,
+                        explanation: "'my' adalah possessive adjective (diikuti noun), 'mine' adalah possessive pronoun (tidak diikuti noun)"
+                    }
+                ]
+            },
+            "3smp": {
+                matematika: [
+                    {
+                        question: "Nilai x dari persamaan 2x² - 5x - 3 = 0 adalah...",
+                        options: ["-1/2 dan 3", "1/2 dan -3", "-1/2 dan -3", "1/2 dan 3"],
+                        answer: 0,
+                        explanation: "2x² - 5x - 3 = (2x+1)(x-3) = 0 → x = -1/2 atau x = 3"
+                    },
+                    {
+                        question: "Diketahui f(x) = 3x - 2 dan g(x) = x² + 1. Nilai (f ∘ g)(2) = ...",
+                        options: ["13", "11", "9", "7"],
+                        answer: 0,
+                        explanation: "g(2) = 2² + 1 = 5, f(5) = 3(5) - 2 = 13"
+                    },
+                    {
+                        question: "Suku ke-10 dari barisan aritmatika 2, 5, 8, 11, ... adalah...",
+                        options: ["29", "30", "31", "32"],
+                        answer: 0,
+                        explanation: "a=2, b=3, U10 = a + (10-1)b = 2 + 9×3 = 29"
+                    },
+                    {
+                        question: "Nilai dari sin 60° cos 30° + cos 60° sin 30° = ...",
+                        options: ["1", "√3/2", "1/2", "0"],
+                        answer: 1,
+                        explanation: "sin 60° cos 30° + cos 60° sin 30° = sin(60°+30°) = sin 90° = 1"
+                    },
+                    {
+                        question: "Jika log 2 = 0.3010 dan log 3 = 0.4771, maka log 18 = ...",
+                        options: ["1.2552", "1.4771", "1.6532", "1.7781"],
+                        answer: 0,
+                        explanation: "log 18 = log(2×3²) = log 2 + 2 log 3 = 0.3010 + 2×0.4771 = 1.2552"
+                    },
+                    {
+                        question: "Turunan pertama dari f(x) = 3x⁴ - 2x² + 5x - 1 adalah...",
+                        options: ["12x³ - 4x + 5", "12x³ - 4x² + 5", "12x³ - 2x + 5", "12x³ - 4x + 5x"],
+                        answer: 0,
+                        explanation: "f'(x) = 12x³ - 4x + 5 (turunan dari 3x⁴=12x³, -2x²=-4x, 5x=5, -1=0)"
+                    },
+                    {
+                        question: "Luas daerah yang dibatasi oleh kurva y = x² - 4x + 3 dan sumbu x adalah...",
+                        options: ["4/3", "2", "8/3", "4"],
+                        answer: 2,
+                        explanation: "Titik potong dengan sumbu x: x=1 dan x=3. Luas = ∫₁³ (x²-4x+3)dx = [x³/3 - 2x² + 3x]₁³ = 8/3"
+                    },
+                    {
+                        question: "Nilai dari lim(x→2) (x²-4)/(x-2) = ...",
+                        options: ["0", "2", "4", "Tidak ada"],
+                        answer: 2,
+                        explanation: "(x²-4)/(x-2) = (x-2)(x+2)/(x-2) = x+2 → lim(x→2) = 2+2 = 4"
+                    },
+                    {
+                        question: "Diketahui vektor a = (2, -1, 3) dan b = (1, 2, -2). Hasil dari a·b = ...",
+                        options: ["-6", "-2", "2", "6"],
+                        answer: 1,
+                        explanation: "a·b = (2×1) + (-1×2) + (3×-2) = 2 - 2 - 6 = -6"
+                    },
+                    {
+                        question: "Persamaan lingkaran dengan pusat (2, -3) dan jari-jari 5 adalah...",
+                        options: ["(x-2)²+(y+3)²=25", "(x+2)²+(y-3)²=25", "(x-2)²+(y-3)²=25", "(x+2)²+(y+3)²=25"],
+                        answer: 0,
+                        explanation: "Persamaan lingkaran: (x-a)²+(y-b)²=r² dengan pusat (a,b)"
+                    },
+                    {
+                        question: "Nilai dari cos 120° adalah...",
+                        options: ["-1/2", "1/2", "-√3/2", "√3/2"],
+                        answer: 0,
+                        explanation: "cos 120° = cos(180°-60°) = -cos 60° = -1/2"
+                    },
+                    {
+                        question: "Probabilitas munculnya angka pada pelemparan sebuah mata uang adalah...",
+                        options: ["1/4", "1/3", "1/2", "2/3"],
+                        answer: 2,
+                        explanation: "Mata uang memiliki 2 sisi: angka dan gambar. P(angka) = 1/2"
+                    },
+                    {
+                        question: "Diketahui matriks A = [[2,1],[3,4]]. Determinan matriks A adalah...",
+                        options: ["5", "6", "7", "8"],
+                        answer: 0,
+                        explanation: "det(A) = (2×4) - (1×3) = 8 - 3 = 5"
+                    },
+                    {
+                        question: "Nilai dari ∫(3x² - 2x + 1) dx = ...",
+                        options: ["x³ - x² + x + C", "x³ - 2x² + x + C", "3x³ - x² + x + C", "x³ - x² + 3x + C"],
+                        answer: 0,
+                        explanation: "∫(3x² - 2x + 1) dx = x³ - x² + x + C"
+                    },
+                    {
+                        question: "Suku banyak 2x³ - 5x² + 3x - 1 dibagi (x-2) memberikan sisa...",
+                        options: ["1", "2", "3", "4"],
+                        answer: 0,
+                        explanation: "Teorema sisa: f(2) = 2(8) - 5(4) + 3(2) - 1 = 16 - 20 + 6 - 1 = 1"
+                    }
+                ],
+                ipa: [
+                    {
+                        question: "Hukum Faraday tentang induksi elektromagnetik menyatakan bahwa...",
+                        options: [
+                            "GGL induksi sebanding dengan laju perubahan fluks magnet",
+                            "Arus listrik menghasilkan medan magnet",
+                            "Muatan listrik tidak dapat diciptakan atau dimusnahkan",
+                            "Energi listrik berbanding lurus dengan kuadrat arus"
+                        ],
+                        answer: 0,
+                        explanation: "Hukum Faraday: GGL induksi sebanding dengan laju perubahan fluks magnetik"
+                    },
+                    {
+                        question: "Pada reaksi redoks, zat yang mengalami oksidasi adalah...",
+                        options: ["Zat yang melepaskan elektron", "Zat yang menerima elektron", "Zat yang melepaskan proton", "Zat yang menerima proton"],
+                        answer: 0,
+                        explanation: "Oksidasi: pelepasan elektron, peningkatan bilangan oksidasi"
+                    },
+                    {
+                        question: "Sistem ekskresi pada manusia melibatkan organ berikut, KECUALI...",
+                        options: ["Ginjal", "Paru-paru", "Hati", "Lambung"],
+                        answer: 3,
+                        explanation: "Lambung adalah organ pencernaan, bukan ekskresi. Ginjal, paru-paru, dan hati terlibat dalam ekskresi"
+                    },
+                    {
+                        question: "Pada fotosintesis, reaksi terang terjadi di...",
+                        options: ["Stroma", "Grana", "Membran tilakoid", "Sitoplasma"],
+                        answer: 1,
+                        explanation: "Reaksi terang fotosintesis terjadi di grana (tumpukan tilakoid)"
+                    },
+                    {
+                        question: "Menurut hukum Hardy-Weinberg, frekuensi alel dalam populasi akan tetap konstan jika...",
+                        options: [
+                            "Populasi besar, perkawinan acak, tidak ada seleksi",
+                            "Populasi kecil, perkawinan tidak acak, ada seleksi",
+                            "Ada mutasi, migrasi, dan seleksi alam",
+                            "Populasi mengalami isolasi reproduksi"
+                        ],
+                        answer: 0,
+                        explanation: "Hukum Hardy-Weinberg: frekuensi alel stabil jika populasi besar, perkawinan acak, tidak ada seleksi/mutasi/migrasi"
+                    },
+                    {
+                        question: "Enzim yang mengkatalisis reaksi pembentukan ATP dalam respirasi sel adalah...",
+                        options: ["ATP sintase", "ATPase", "Amilase", "Katalase"],
+                        answer: 0,
+                        explanation: "ATP sintase mengkatalisis pembentukan ATP dari ADP dan fosfat anorganik"
+                    },
+                    {
+                        question: "Pembelahan sel secara meiosis terjadi pada...",
+                        options: ["Sel somatik", "Sel gamet", "Sel saraf", "Sel epitel"],
+                        answer: 1,
+                        explanation: "Meiosis terjadi pada sel gamet (reproduksi) untuk menghasilkan sel haploid"
+                    },
+                    {
+                        question: "Hukum kekekalan massa dikemukakan oleh...",
+                        options: ["Lavoisier", "Dalton", "Avogadro", "Boyle"],
+                        answer: 0,
+                        explanation: "Antoine Lavoisier mengemukakan hukum kekekalan massa"
+                    },
+                    {
+                        question: "Fotosistem I dan II pada fotosintesis berperan dalam...",
+                        options: ["Siklus Calvin", "Reaksi terang", "Fotorespirasi", "Respirasi aerob"],
+                        answer: 1,
+                        explanation: "Fotosistem I dan II terlibat dalam reaksi terang fotosintesis"
+                    },
+                    {
+                        question: "Menurut teori evolusi Darwin, mekanisme evolusi utama adalah...",
+                        options: ["Seleksi alam", "Mutasi acak", "Pewarisan sifat yang diperoleh", "Isolasi geografis"],
+                        answer: 0,
+                        explanation: "Darwin: seleksi alam adalah mekanisme utama evolusi"
+                    },
+                    {
+                        question: "Pada sistem periodik, golongan IA disebut juga...",
+                        options: ["Alkali", "Alkali tanah", "Halogen", "Gas mulia"],
+                        answer: 0,
+                        explanation: "Golongan IA: logam alkali (Li, Na, K, Rb, Cs, Fr)"
+                    },
+                    {
+                        question: "Hukum Mendel I (hukum segregasi) menyatakan bahwa...",
+                        options: [
+                            "Alel-alel suatu gen berpisah saat pembentukan gamet",
+                            "Gen untuk sifat berbeda diturunkan secara independen",
+                            "Sifat dominan menutupi sifat resesif",
+                            "Fenotipe adalah hasil interaksi genotipe dan lingkungan"
+                        ],
+                        answer: 0,
+                        explanation: "Hukum Mendel I (segregasi): alel-alel suatu gen berpisah saat pembentukan gamet"
+                    },
+                    {
+                        question: "Pada rantai makanan, organisme yang berperan sebagai dekomposer adalah...",
+                        options: ["Produsen", "Konsumen I", "Konsumen II", "Pengurai"],
+                        answer: 3,
+                        explanation: "Dekomposer/pengurai menguraikan materi organik menjadi anorganik"
+                    },
+                    {
+                        question: "Teori atom modern didasarkan pada model atom...",
+                        options: ["Dalton", "Thomson", "Rutherford", "Bohr"],
+                        answer: 3,
+                        explanation: "Model atom Bohr (dengan modifikasi mekanika kuantum) adalah dasar teori atom modern"
+                    },
+                    {
+                        question: "Sistem koordinasi pada manusia melibatkan sistem...",
+                        options: ["Saraf dan hormon", "Saraf dan pencernaan", "Hormon dan pernapasan", "Peredaran darah dan saraf"],
+                        answer: 0,
+                        explanation: "Sistem koordinasi: sistem saraf dan sistem endokrin (hormon)"
+                    }
+                ],
+                "bahasa-indonesia": [
+                    {
+                        question: "Karya sastra yang termasuk genre puisi baru adalah...",
+                        options: ["Pantun", "Syair", "Soneta", "Gurindam"],
+                        answer: 2,
+                        explanation: "Soneta adalah bentuk puisi baru (14 baris dengan pola rima tertentu)"
+                    },
+                    {
+                        question: "Kalimat yang menggunakan kata 'daripada' dengan tepat adalah...",
+                        options: [
+                            "Daripada kamu tidak belajar, lebih baik kamu belajar",
+                            "Tingginya daripada saya",
+                            "Dia datang daripada rumah",
+                            "Buku itu berada daripada meja"
+                        ],
+                        answer: 0,
+                        explanation: "'Daripada' digunakan untuk membandingkan dua pilihan atau keadaan"
+                    },
+                    {
+                        question: "Jenis karangan yang bertujuan menggambarkan suatu objek secara detail adalah...",
+                        options: ["Narasi", "Deskripsi", "Eksposisi", "Argumentasi"],
+                        answer: 1,
+                        explanation: "Deskripsi bertujuan menggambarkan objek sehingga pembaca seolah melihat/mengalami"
+                    },
+                    {
+                        question: "Unsur ekstrinsik karya sastra meliputi, KECUALI...",
+                        options: ["Latar belakang pengarang", "Nilai sosial budaya", "Alur cerita", "Kondisi masyarakat saat karya dibuat"],
+                        answer: 2,
+                        explanation: "Alur cerita adalah unsur intrinsik. Unsur ekstrinsik: hal-hal di luar teks yang mempengaruhi karya"
+                    },
+                    {
+                        question: "Kata yang mengalami perubahan makna sinestesia adalah...",
+                        options: ["Kata pedas (rasa → kritikan)", "Kata manis (rasa → karakter)", "Kata dingin (suhu → sikap)", "Kata tajam (benda → pikiran)"],
+                        answer: 3,
+                        explanation: "Sinestesia: perubahan makna dari satu indera ke indera lain. 'Tajam' dari indera peraba ke indera penglihatan/pikiran"
+                    },
+                    {
+                        question: "Kalimat yang menggunakan pola kalimat inversi adalah...",
+                        options: [
+                            "Dia pergi ke sekolah",
+                            "Pergilah dia ke sekolah",
+                            "Ke sekolah dia pergi",
+                            "Dia ke sekolah pergi"
+                        ],
+                        answer: 1,
+                        explanation: "Kalimat inversi: predikat mendahului subjek. 'Pergilah dia' (predikat 'pergi' mendahului subjek 'dia')"
+                    },
+                    {
+                        question: "Jenis drama yang mengungkapkan kritik sosial dengan cara humor adalah...",
+                        options: ["Tragedi", "Komedi", "Melodrama", "Satire"],
+                        answer: 3,
+                        explanation: "Satire adalah drama yang mengkritik kebodohan/kejahatan dengan cara humor/sindiran"
+                    },
+                    {
+                        question: "Kata yang termasuk kata ulang berimbuan adalah...",
+                        options: ["Buku-buku", "Main-main", "Berjalan-jalan", "Rumah-rumahan"],
+                        answer: 2,
+                        explanation: "Kata ulang berimbuan: pengulangan kata dengan penambahan afiks. 'Berjalan-jalan' (ber- + jalan + ulang)"
+                    },
+                    {
+                        question: "Gaya bahasa yang menggunakan perbandingan langsung tanpa kata pembanding disebut...",
+                        options: ["Simile", "Metafora", "Personifikasi", "Hiperbola"],
+                        answer: 1,
+                        explanation: "Metafora: perbandingan langsung tanpa kata pembanding (seperti, bagai, laksana)"
+                    },
+                    {
+                        question: "Teks prosedur memiliki struktur...",
+                        options: [
+                            "Orientasi - komplikasi - resolusi",
+                            "Tesis - argumentasi - penegasan ulang",
+                            "Pernyataan umum - deskripsi bagian - deskripsi manfaat",
+                            "Tujuan - material/langkah - penutup"
+                        ],
+                        answer: 3,
+                        explanation: "Struktur teks prosedur: tujuan, material/langkah-langkah, penutup"
+                    },
+                    {
+                        question: "Kalimat yang mengandung majas litotes adalah...",
+                        options: [
+                            "Dia setinggi gunung",
+                            "Suaranya menggelegar membelah angkasa",
+                            "Mampirlah ke gubuk kami yang sederhana ini",
+                            "Waktunya berjalan sangat lambat"
+                        ],
+                        answer: 2,
+                        explanation: "Litotes: ungkapan merendahkan diri. 'Gubuk kami yang sederhana' padahal mungkin rumah yang bagus"
+                    },
+                    {
+                        question: "Jenis alur cerita yang menceritakan kembali peristiwa masa lalu disebut...",
+                        options: ["Alur maju", "Alur mundur", "Alur campuran", "Alur sorot balik"],
+                        answer: 3,
+                        explanation: "Alur sorot balik (flashback): menceritakan kembali peristiwa masa lalu"
+                    },
+                    {
+                        question: "Kata yang mengalami perubahan makna meluas adalah...",
+                        options: ["Sastra", "Kepala", "Bapak", "Sarjana"],
+                        answer: 2,
+                        explanation: "'Bapak' mengalami perluasan makna: dari ayah kandung menjadi sebutan untuk laki-laki yang dihormati"
+                    },
+                    {
+                        question: "Kalimat yang menggunakan diksi konotasi positif adalah...",
+                        options: [
+                            "Dia anak emas perusahaan itu",
+                            "Dia menjadi kambing hitam dalam kasus itu",
+                            "Itu adalah proyek gajah putih",
+                            "Dia mempunyai tangan panjang"
+                        ],
+                        answer: 0,
+                        explanation: "'Anak emas' konotasi positif (disayang, dikasihi). Lainnya konotasi negatif"
+                    },
+                    {
+                        question: "Teks yang bertujuan mempengaruhi pembaca dengan fakta dan data disebut teks...",
+                        options: ["Narasi", "Deskripsi", "Eksposisi", "Argumentasi"],
+                        answer: 3,
+                        explanation: "Argumentasi bertujuan mempengaruhi pembaca dengan fakta, data, alasan logis"
+                    }
+                ],
+                "english": [
+                    {
+                        question: "If I ____ you, I would study harder.",
+                        options: ["am", "was", "were", "be"],
+                        answer: 2,
+                        explanation: "Conditional type 2: If + past tense (were untuk semua subjek), would + V1"
+                    },
+                    {
+                        question: "The book ____ I bought yesterday is very interesting.",
+                        options: ["who", "whom", "which", "whose"],
+                        answer: 2,
+                        explanation: "'Which' untuk benda (book). Relative pronoun untuk subject/object"
+                    },
+                    {
+                        question: "She ____ here since 2010.",
+                        options: ["lives", "lived", "has lived", "is living"],
+                        answer: 2,
+                        explanation: "Present Perfect Continuous: has/have + been + V-ing (since menunjukkan awal periode)"
+                    },
+                    {
+                        question: "I wish I ____ taller.",
+                        options: ["am", "was", "were", "be"],
+                        answer: 2,
+                        explanation: "Setelah 'wish' menggunakan past tense (were untuk semua subjek dalam subjunctive mood)"
+                    },
+                    {
+                        question: "He was made ____ the report again.",
+                        options: ["write", "to write", "writing", "written"],
+                        answer: 1,
+                        explanation: "Passive causative: was made + to infinitive (to write)"
+                    },
+                    {
+                        question: "Not only ____ clever, but he is also kind.",
+                        options: ["he is", "is he", "does he", "he does"],
+                        answer: 1,
+                        explanation: "Inversi setelah 'not only': Not only + auxiliary verb + subject + main verb"
+                    },
+                    {
+                        question: "I'd rather you ____ here.",
+                        options: ["stay", "stayed", "to stay", "staying"],
+                        answer: 1,
+                        explanation: "'I'd rather + subject + past tense' untuk menyatakan preferensi tentang orang lain"
+                    },
+                    {
+                        question: "By next year, she ____ her degree.",
+                        options: ["will complete", "will have completed", "has completed", "completes"],
+                        answer: 1,
+                        explanation: "Future Perfect: will have + V3 (untuk aksi yang akan selesai sebelum waktu tertentu di masa depan)"
+                    },
+                    {
+                        question: "Had I known, I ____ you.",
+                        options: ["would help", "would have helped", "helped", "had helped"],
+                        answer: 1,
+                        explanation: "Conditional type 3: If I had known, I would have helped. Dalam inversi: Had I known, I would have helped"
+                    },
+                    {
+                        question: "The teacher suggested that the student ____ more carefully.",
+                        options: ["reads", "read", "to read", "reading"],
+                        answer: 1,
+                        explanation: "Setelah 'suggest' + that + subject + bare infinitive (read tanpa 's') dalam subjunctive mood"
+                    },
+                    {
+                        question: "____ he study hard, he will pass the exam.",
+                        options: ["Should", "If", "Unless", "Provided"],
+                        answer: 1,
+                        explanation: "'If' untuk conditional type 1: If + present, will + V1"
+                    },
+                    {
+                        question: "I object to ____ treated like a child.",
+                        options: ["be", "being", "been", "have been"],
+                        answer: 1,
+                        explanation: "Setelah preposisi ('to') menggunakan gerund (being)"
+                    },
+                    {
+                        question: "Hardly ____ arrived when it started to rain.",
+                        options: ["we had", "had we", "we have", "have we"],
+                        answer: 1,
+                        explanation: "Inversi setelah 'hardly': Hardly + auxiliary verb + subject + main verb"
+                    },
+                    {
+                        question: "The report needs ____ by tomorrow.",
+                        options: ["complete", "to complete", "completing", "completed"],
+                        answer: 2,
+                        explanation: "Need + gerund (active form dengan makna pasif): needs completing = needs to be completed"
+                    },
+                    {
+                        question: "Were she ____, she would help us.",
+                        options: ["here", "was here", "is here", "has been here"],
+                        answer: 0,
+                        explanation: "Conditional type 2 dalam bentuk inversi: Were + subject + complement, would + V1"
+                    }
+                ]
+            }
+        };
+
+        // State aplikasi
+        let state = {
+            studentName: "",
+            selectedClass: "",
+            currentScreen: 'name-input',
+            currentSubject: null,
+            currentQuestionIndex: 0,
+            mode: 'simulation', // 'simulation' atau 'learning'
+            answers: {
+                matematika: Array(15).fill(null),
+                ipa: Array(15).fill(null),
+                "bahasa-indonesia": Array(15).fill(null),
+                "english": Array(15).fill(null)
+            },
+            timers: {
+                matematika: 30 * 60, // 30 menit dalam detik
+                ipa: 30 * 60,
+                "bahasa-indonesia": 30 * 60,
+                "english": 30 * 60
+            },
+            timerIntervals: {},
+            testStarted: {
+                matematika: false,
+                ipa: false,
+                "bahasa-indonesia": false,
+                "english": false
+            },
+            progress: {
+                matematika: 0,
+                ipa: 0,
+                "bahasa-indonesia": 0,
+                "english": 0
+            }
+        };
+
+        // Fungsi untuk memulai aplikasi setelah input nama
+        function startApp() {
+            const nameInput = document.getElementById('student-name');
+            const studentName = nameInput.value.trim();
+            
+            if (!studentName) {
+                alert("Silakan masukkan nama Anda terlebih dahulu!");
+                nameInput.focus();
+                return;
+            }
+            
+            // Simpan nama siswa
+            state.studentName = studentName;
+            
+            // Tampilkan nama di layar pilih kelas
+            document.getElementById('class-selection-name').textContent = studentName;
+            
+            // Pindah ke layar pilih kelas
+            changeScreen('class-selection');
+        }
+
+        // Fungsi untuk memilih kelas
+        function selectClass(className) {
+            // Hapus seleksi sebelumnya
+            document.querySelectorAll('.class-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Tandai kelas yang dipilih
+            event.currentTarget.classList.add('selected');
+            
+            // Simpan kelas yang dipilih
+            state.selectedClass = className;
+        }
+
+        // Fungsi untuk konfirmasi pilihan kelas
+        function confirmClass() {
+            if (!state.selectedClass) {
+                alert("Silakan pilih kelas terlebih dahulu!");
+                return;
+            }
+            
+            // Tampilkan informasi siswa di header
+            document.getElementById('student-name-display').textContent = state.studentName;
+            
+            let classDisplay = "";
+            switch(state.selectedClass) {
+                case '6sd': classDisplay = "Kelas 6 SD"; break;
+                case '2smp': classDisplay = "Kelas 2 SMP"; break;
+                case '3smp': classDisplay = "Kelas 3 SMP"; break;
+            }
+            document.getElementById('student-class-display').textContent = classDisplay;
+            document.getElementById('student-info').style.display = 'block';
+            
+            // Tampilkan kelas di layar welcome
+            document.getElementById('welcome-class').textContent = classDisplay;
+            
+            // Update daftar mata pelajaran sesuai kelas
+            updateSubjectList();
+            
+            // Tampilkan sidebar
+            document.getElementById('sidebar').style.display = 'block';
+            
+            // Pindah ke layar welcome
+            changeScreen('welcome');
+        }
+
+        // Fungsi untuk update daftar mata pelajaran sesuai kelas
+        function updateSubjectList() {
+            const subjectList = document.getElementById('subject-list');
+            subjectList.innerHTML = '';
+            
+            let subjects = [];
+            
+            // Tentukan mata pelajaran berdasarkan kelas
+            switch(state.selectedClass) {
+                case '6sd':
+                    subjects = [
+                        { id: 'matematika', name: 'Matematika', icon: 'fa-calculator', desc: '15 soal • 30 menit' },
+                        { id: 'ipa', name: 'IPA', icon: 'fa-flask', desc: '15 soal • 30 menit' },
+                        { id: 'bahasa-indonesia', name: 'Bahasa Indonesia', icon: 'fa-book', desc: '15 soal • 30 menit' }
+                    ];
+                    // Sembunyikan menu bahasa Inggris untuk SD
+                    document.querySelector('.menu-item[data-screen="english"]').style.display = 'none';
+                    break;
+                    
+                case '2smp':
+                case '3smp':
+                    subjects = [
+                        { id: 'matematika', name: 'Matematika', icon: 'fa-calculator', desc: '15 soal • 30 menit' },
+                        { id: 'ipa', name: 'IPA', icon: 'fa-flask', desc: '15 soal • 30 menit' },
+                        { id: 'bahasa-indonesia', name: 'Bahasa Indonesia', icon: 'fa-book', desc: '15 soal • 30 menit' },
+                        { id: 'english', name: 'Bahasa Inggris', icon: 'fa-language', desc: '15 soal • 30 menit' }
+                    ];
+                    // Tampilkan menu bahasa Inggris untuk SMP
+                    document.querySelector('.menu-item[data-screen="english"]').style.display = 'flex';
+                    break;
+            }
+            
+            // Buat kartu mata pelajaran
+            subjects.forEach(subject => {
+                const subjectCard = document.createElement('div');
+                subjectCard.className = 'subject-card';
+                subjectCard.dataset.subject = subject.id;
+                
+                subjectCard.innerHTML = `
+                    <i class="fas ${subject.icon}"></i>
+                    <h3>${subject.name}</h3>
+                    <p class="subject-info">${subject.desc}</p>
+                    <div class="progress-label">Progress: ${state.progress[subject.id]}%</div>
+                `;
+                
+                subjectCard.addEventListener('click', function() {
+                    changeScreen(subject.id);
+                });
+                
+                subjectList.appendChild(subjectCard);
+            });
+            
+            // Update progress di sidebar
+            updateProgressIndicators();
+        }
+
+        // Fungsi untuk update progress indicator di sidebar
+        function updateProgressIndicators() {
+            for (const subject in state.progress) {
+                const answered = state.answers[subject].filter(answer => answer !== null).length;
+                const progress = Math.round((answered / 15) * 100);
+                state.progress[subject] = progress;
+                
+                const indicator = document.getElementById(`${subject}-progress-indicator`);
+                if (indicator) {
+                    indicator.textContent = `${answered}/15`;
+                }
+            }
+            
+            // Update progress di beranda
+            updateHomeProgress();
+        }
+
+        // Fungsi untuk update progress di beranda
+        function updateHomeProgress() {
+            let totalAnswered = 0;
+            let totalQuestions = 0;
+            let totalScore = 0;
+            let completedTests = 0;
+            
+            for (const subject in state.answers) {
+                if (state.selectedClass === '6sd' && subject === 'english') continue;
+                
+                const answered = state.answers[subject].filter(answer => answer !== null).length;
+                totalAnswered += answered;
+                totalQuestions += 15;
+                
+                // Hitung skor sementara
+                let correct = 0;
+                const questions = questionsData[state.selectedClass][subject];
+                if (questions) {
+                    for (let i = 0; i < state.answers[subject].length; i++) {
+                        if (state.answers[subject][i] === questions[i]?.answer) {
+                            correct++;
+                        }
+                    }
+                    totalScore += Math.round((correct / 15) * 100);
+                    
+                    if (answered === 15) completedTests++;
+                }
+            }
+            
+            const totalProgress = totalQuestions > 0 ? Math.round((totalAnswered / totalQuestions) * 100) : 0;
+            const averageScore = completedTests > 0 ? Math.round(totalScore / completedTests) : 0;
+            
+            document.getElementById('total-progress').textContent = `${totalProgress}%`;
+            document.getElementById('average-score').textContent = averageScore;
+            document.getElementById('completed-tests').textContent = completedTests;
+        }
+
+        // Fungsi untuk mengubah layar
+        function changeScreen(screenId) {
+            // Hentikan timer dari layar sebelumnya jika ada
+            if (state.currentSubject && state.timerIntervals[state.currentSubject]) {
+                clearInterval(state.timerIntervals[state.currentSubject]);
+            }
+            
+            // Sembunyikan semua layar
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Tampilkan layar yang dipilih
+            document.getElementById(screenId).classList.add('active');
+            
+            // Update menu aktif
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.screen === screenId) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // Update state
+            state.currentScreen = screenId;
+            
+            // Jika pindah ke layar tes, inisialisasi tes
+            if (['matematika', 'ipa', 'bahasa-indonesia', 'english'].includes(screenId)) {
+                state.currentSubject = screenId;
+                state.currentQuestionIndex = 0;
+                loadQuestion(screenId, 0);
+                createQuestionNumbers(screenId);
+                
+                // Tampilkan atau sembunyikan panel asisten berdasarkan mode
+                const assistantPanel = document.getElementById(`${screenId}-assistant`);
+                if (state.mode === 'learning') {
+                    assistantPanel.classList.add('show');
+                } else {
+                    assistantPanel.classList.remove('show');
+                }
+                
+                if (!state.testStarted[screenId] && state.mode === 'simulation') {
+                    startTimer(screenId);
+                    state.testStarted[screenId] = true;
+                } else if (state.mode === 'simulation') {
+                    updateTimerDisplay(screenId);
+                    // Lanjutkan timer jika sudah dimulai sebelumnya
+                    if (!state.timerIntervals[screenId]) {
+                        startTimer(screenId);
+                    }
+                }
+            }
+            
+            // Jika pindah ke layar hasil, hitung dan tampilkan hasil
+            if (screenId === 'results') {
+                calculateResults();
+            }
+            
+            // Jika pindah ke layar welcome, update progress
+            if (screenId === 'welcome') {
+                updateHomeProgress();
+            }
+        }
+
+        // Fungsi untuk mengubah mode (simulasi/belajar)
+        function changeMode(mode) {
+            state.mode = mode;
+            
+            // Update tampilan tombol mode
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Jika sedang di layar tes, update tampilan
+            if (['matematika', 'ipa', 'bahasa-indonesia', 'english'].includes(state.currentScreen)) {
+                const assistantPanel = document.getElementById(`${state.currentScreen}-assistant`);
+                if (mode === 'learning') {
+                    assistantPanel.classList.add('show');
+                    // Hentikan timer jika sedang berjalan
+                    if (state.timerIntervals[state.currentScreen]) {
+                        clearInterval(state.timerIntervals[state.currentScreen]);
+                    }
+                } else {
+                    assistantPanel.classList.remove('show');
+                    // Mulai timer jika belum dimulai
+                    if (!state.timerIntervals[state.currentScreen]) {
+                        startTimer(state.currentScreen);
+                    }
+                }
+            }
+        }
+
+        // Fungsi untuk membuat nomor-nomor soal
+        function createQuestionNumbers(subject) {
+            const numbersContainer = document.getElementById(`${subject}-numbers`);
+            numbersContainer.innerHTML = '';
+            
+            for (let i = 0; i < 15; i++) {
+                const numberElement = document.createElement('div');
+                numberElement.className = 'question-number';
+                numberElement.textContent = i + 1;
+                numberElement.dataset.index = i;
+                
+                // Tandai status soal
+                if (state.answers[subject][i] !== null) {
+                    numberElement.classList.add('answered');
+                }
+                
+                if (i === state.currentQuestionIndex) {
+                    numberElement.classList.add('current');
+                }
+                
+                numberElement.addEventListener('click', () => {
+                    state.currentQuestionIndex = i;
+                    loadQuestion(subject, i);
+                    updateQuestionNumbers(subject);
+                });
+                
+                numbersContainer.appendChild(numberElement);
+            }
+        }
+
+        // Fungsi untuk memperbarui tampilan nomor soal
+        function updateQuestionNumbers(subject) {
+            const numbers = document.querySelectorAll(`#${subject}-numbers .question-number`);
+            numbers.forEach((number, i) => {
+                number.classList.remove('current');
+                number.classList.remove('answered');
+                number.classList.remove('skipped');
+                
+                if (i === state.currentQuestionIndex) {
+                    number.classList.add('current');
+                }
+                
+                if (state.answers[subject][i] !== null) {
+                    number.classList.add('answered');
+                }
+            });
+        }
+
+        // Fungsi untuk memuat soal
+        function loadQuestion(subject, index) {
+            const questions = questionsData[state.selectedClass][subject];
+            if (!questions || !questions[index]) {
+                console.error(`Soal tidak ditemukan: kelas=${state.selectedClass}, subject=${subject}, index=${index}`);
+                return;
+            }
+            
+            const question = questions[index];
+            
+            // Update teks soal
+            document.getElementById(`${subject}-question`).textContent = `${index + 1}. ${question.question}`;
+            
+            // Update counter soal
+            document.getElementById(`${subject}-current`).textContent = index + 1;
+            
+            // Update progress bar
+            const progress = ((index + 1) / 15) * 100;
+            document.getElementById(`${subject}-progress`).style.width = `${progress}%`;
+            
+            // Bersihkan opsi sebelumnya
+            const optionsContainer = document.getElementById(`${subject}-options`);
+            optionsContainer.innerHTML = '';
+            
+            // Tambahkan opsi baru
+            question.options.forEach((option, i) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                if (state.answers[subject][index] === i) {
+                    optionElement.classList.add('selected');
+                }
+                
+                optionElement.innerHTML = `
+                    <div class="option-label">${String.fromCharCode(65 + i)}</div>
+                    <div class="option-text">${option}</div>
+                `;
+                
+                optionElement.addEventListener('click', () => selectOption(subject, index, i));
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Update konten asisten jika mode belajar
+            if (state.mode === 'learning' && question.explanation) {
+                document.getElementById(`${subject}-assistant-content`).textContent = question.explanation;
+            }
+            
+            // Update status tombol navigasi
+            const prevButton = document.getElementById(`${subject}-prev`);
+            prevButton.disabled = index === 0;
+            
+            const nextButton = document.getElementById(`${subject}-next`);
+            if (index === questions.length - 1) {
+                nextButton.innerHTML = `<i class="fas fa-flag-checkered"></i> Selesai`;
+                nextButton.onclick = () => finishTest(subject);
+            } else {
+                nextButton.innerHTML = state.currentScreen === 'english' ? 
+                    `Next <i class="fas fa-arrow-right"></i>` : 
+                    `Berikutnya <i class="fas fa-arrow-right"></i>`;
+                nextButton.onclick = () => nextQuestion(subject);
+            }
+        }
+
+        // Fungsi untuk memilih opsi
+        function selectOption(subject, questionIndex, optionIndex) {
+            state.answers[subject][questionIndex] = optionIndex;
+            
+            // Update tampilan opsi yang dipilih
+            const options = document.querySelectorAll(`#${subject}-options .option`);
+            options.forEach((option, i) => {
+                if (i === optionIndex) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+            
+            // Update nomor soal
+            updateQuestionNumbers(subject);
+            
+            // Update progress
+            updateProgressIndicators();
+            
+            // Jika mode belajar, berikan feedback langsung
+            if (state.mode === 'learning') {
+                const questions = questionsData[state.selectedClass][subject];
+                const correctAnswer = questions[questionIndex].answer;
+                
+                // Tandai jawaban yang benar dan salah
+                options.forEach((option, i) => {
+                    if (i === correctAnswer) {
+                        option.classList.add('correct');
+                    } else if (i === optionIndex && i !== correctAnswer) {
+                        option.classList.add('incorrect');
+                    }
+                });
+            }
+        }
+
+        // Fungsi untuk memberikan petunjuk
+        function giveHint(subject) {
+            const questions = questionsData[state.selectedClass][subject];
+            const currentQuestion = questions[state.currentQuestionIndex];
+            
+            if (currentQuestion && currentQuestion.explanation) {
+                const assistantContent = document.getElementById(`${subject}-assistant-content`);
+                assistantContent.textContent = `Petunjuk: ${currentQuestion.explanation}`;
+            }
+        }
+
+        // Fungsi untuk pindah ke soal berikutnya
+        function nextQuestion(subject) {
+            if (state.currentQuestionIndex < 14) {
+                state.currentQuestionIndex++;
+                loadQuestion(subject, state.currentQuestionIndex);
+                updateQuestionNumbers(subject);
+            }
+        }
+
+        // Fungsi untuk pindah ke soal sebelumnya
+        function prevQuestion(subject) {
+            if (state.currentQuestionIndex > 0) {
+                state.currentQuestionIndex--;
+                loadQuestion(subject, state.currentQuestionIndex);
+                updateQuestionNumbers(subject);
+            }
+        }
+
+        // Fungsi untuk melewatkan soal
+        function skipQuestion(subject) {
+            state.answers[subject][state.currentQuestionIndex] = null;
+            
+            // Update nomor soal
+            updateQuestionNumbers(subject);
+            
+            // Update progress
+            updateProgressIndicators();
+            
+            if (state.currentQuestionIndex < 14) {
+                state.currentQuestionIndex++;
+                loadQuestion(subject, state.currentQuestionIndex);
+                updateQuestionNumbers(subject);
+            }
+        }
+
+        // Fungsi untuk memulai timer
+        function startTimer(subject) {
+            // Hentikan timer sebelumnya jika ada
+            if (state.timerIntervals[subject]) {
+                clearInterval(state.timerIntervals[subject]);
+            }
+            
+            // Reset timer jika sudah 0
+            if (state.timers[subject] <= 0) {
+                state.timers[subject] = 30 * 60;
+            }
+            
+            // Update tampilan timer
+            updateTimerDisplay(subject);
+            
+            // Jalankan timer
+            state.timerIntervals[subject] = setInterval(() => {
+                state.timers[subject]--;
+                updateTimerDisplay(subject);
+                
+                // Jika waktu habis, selesaikan tes
+                if (state.timers[subject] <= 0) {
+                    clearInterval(state.timerIntervals[subject]);
+                    finishTest(subject);
+                }
+            }, 1000);
+        }
+
+        // Fungsi untuk memperbarui tampilan timer
+        function updateTimerDisplay(subject) {
+            const minutes = Math.floor(state.timers[subject] / 60);
+            const seconds = state.timers[subject] % 60;
+            const timerElement = document.getElementById(`${subject}-timer`);
+            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Ubah warna menjadi merah jika waktu kurang dari 5 menit
+            if (state.timers[subject] < 300) {
+                timerElement.style.color = '#f44336';
+            } else {
+                timerElement.style.color = '#1a6dcc';
+            }
+        }
+
+        // Fungsi untuk menyelesaikan tes
+        function finishTest(subject) {
+            // Hentikan timer
+            if (state.timerIntervals[subject]) {
+                clearInterval(state.timerIntervals[subject]);
+                delete state.timerIntervals[subject];
+            }
+            
+            // Tampilkan konfirmasi
+            const unanswered = state.answers[subject].filter(answer => answer === null).length;
+            let message = state.currentScreen === 'english' ? 
+                `Are you sure you want to finish the ${subject} test?` : 
+                `Apakah kamu yakin ingin menyelesaikan tes ${subject}?`;
+            
+            if (unanswered > 0) {
+                message += state.currentScreen === 'english' ? 
+                    `\nThere are still ${unanswered} unanswered questions.` : 
+                    `\nMasih ada ${unanswered} soal yang belum dijawab.`;
+            }
+            
+            if (confirm(message)) {
+                changeScreen('results');
+            }
+        }
+
+        // Fungsi untuk menghitung hasil
+        function calculateResults() {
+            // Tampilkan informasi siswa
+            document.getElementById('result-name').textContent = state.studentName;
+            
+            let classDisplay = "";
+            switch(state.selectedClass) {
+                case '6sd': classDisplay = "Kelas 6 SD"; break;
+                case '2smp': classDisplay = "Kelas 2 SMP"; break;
+                case '3smp': classDisplay = "Kelas 3 SMP"; break;
+            }
+            document.getElementById('result-class').textContent = classDisplay;
+            
+            const modeDisplay = state.mode === 'simulation' ? 'Mode Simulasi' : 'Mode Belajar';
+            document.getElementById('result-mode').textContent = modeDisplay;
+            
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('result-date').textContent = now.toLocaleDateString('id-ID', options);
+            
+            let totalCorrect = 0;
+            let totalQuestions = 0;
+            let subjectResultsHTML = '';
+            
+            // Hitung untuk setiap mata pelajaran
+            const subjects = state.selectedClass === '6sd' ? 
+                ['matematika', 'ipa', 'bahasa-indonesia'] : 
+                ['matematika', 'ipa', 'bahasa-indonesia', 'english'];
+            
+            for (const subject of subjects) {
+                const questions = questionsData[state.selectedClass][subject];
+                if (!questions) continue;
+                
+                let correctCount = 0;
+                let subjectDetails = '';
+                
+                for (let i = 0; i < questions.length; i++) {
+                    if (state.answers[subject][i] === questions[i].answer) {
+                        correctCount++;
+                    }
+                    
+                    // Simpan detail untuk tampilan
+                    const isCorrect = state.answers[subject][i] === questions[i].answer;
+                    const isSkipped = state.answers[subject][i] === null;
+                    
+                    let statusText = '';
+                    let statusClass = '';
+                    
+                    if (isSkipped) {
+                        statusText = 'Tidak dijawab';
+                        statusClass = 'skipped';
+                    } else if (isCorrect) {
+                        statusText = 'Benar';
+                        statusClass = 'correct';
+                    } else {
+                        statusText = 'Salah';
+                        statusClass = 'incorrect';
+                    }
+                    
+                    subjectDetails += `
+                        <div class="detail-item">
+                            <div>Soal ${i + 1}: ${questions[i].question.substring(0, 60)}...</div>
+                            <div class="${statusClass}">${statusText}</div>
+                        </div>
+                    `;
+                }
+                
+                // Hitung skor (per 15 soal, nilai maksimal 100)
+                const score = Math.round((correctCount / questions.length) * 100);
+                
+                // Update tampilan
+                const subjectName = subject === 'english' ? 'Bahasa Inggris' : 
+                                  subject === 'ipa' ? 'IPA' : 
+                                  subject === 'matematika' ? 'Matematika' : 'Bahasa Indonesia';
+                
+                subjectResultsHTML += `
+                    <div class="subject-result">
+                        <i class="fas ${subject === 'english' ? 'fa-language' : subject === 'ipa' ? 'fa-flask' : subject === 'matematika' ? 'fa-calculator' : 'fa-book'}"></i>
+                        <h4>${subjectName}</h4>
+                        <p>Skor: <span id="${subject}-score">${score}</span>/100</p>
+                        <p><span id="${subject}-correct">${correctCount}</span> benar dari 15 soal</p>
+                    </div>
+                `;
+                
+                totalCorrect += correctCount;
+                totalQuestions += questions.length;
+            }
+            
+            // Tampilkan hasil per mata pelajaran
+            document.getElementById('subject-results').innerHTML = subjectResultsHTML;
+            
+            // Hitung total skor
+            const totalScore = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+            document.getElementById('total-score').textContent = totalScore;
+            document.getElementById('score-text').textContent = totalScore;
+            
+            // Tampilkan pesan berdasarkan skor
+            const scoreMessage = document.getElementById('score-message');
+            if (totalScore >= 85) {
+                scoreMessage.textContent = "Sangat baik! Kamu sudah menguasai materi dengan baik.";
+                scoreMessage.style.color = "#4CAF50";
+            } else if (totalScore >= 70) {
+                scoreMessage.textContent = "Baik! Namun masih perlu sedikit belajar lagi.";
+                scoreMessage.style.color = "#FF9800";
+            } else if (totalScore >= 60) {
+                scoreMessage.textContent = "Cukup! Disarankan untuk belajar lebih giat lagi.";
+                scoreMessage.style.color = "#FF9800";
+            } else {
+                scoreMessage.textContent = "Perlu peningkatan! Disarankan untuk belajar lebih serius.";
+                scoreMessage.style.color = "#f44336";
+            }
+            
+            // Tampilkan detail hasil
+            const resultsDetails = document.getElementById('results-details');
+            resultsDetails.innerHTML = '';
+            
+            for (const subject of subjects) {
+                const questions = questionsData[state.selectedClass][subject];
+                if (!questions) continue;
+                
+                const subjectTitle = document.createElement('h4');
+                subjectTitle.textContent = subject === 'english' ? 'Bahasa Inggris' : 
+                                          subject === 'ipa' ? 'IPA' : 
+                                          subject === 'matematika' ? 'Matematika' : 'Bahasa Indonesia';
+                subjectTitle.style.marginTop = '20px';
+                subjectTitle.style.color = '#1a6dcc';
+                resultsDetails.appendChild(subjectTitle);
+                
+                let correctCount = 0;
+                let incorrectCount = 0;
+                let skippedCount = 0;
+                
+                for (let i = 0; i < questions.length; i++) {
+                    const detailItem = document.createElement('div');
+                    detailItem.className = 'detail-item';
+                    
+                    const isCorrect = state.answers[subject][i] === questions[i].answer;
+                    const isSkipped = state.answers[subject][i] === null;
+                    
+                    if (isCorrect) correctCount++;
+                    else if (isSkipped) skippedCount++;
+                    else incorrectCount++;
+                    
+                    let statusText = '';
+                    let statusClass = '';
+                    
+                    if (isSkipped) {
+                        statusText = 'Tidak dijawab';
+                        statusClass = 'skipped';
+                    } else if (isCorrect) {
+                        statusText = 'Benar';
+                        statusClass = 'correct';
+                    } else {
+                        statusText = 'Salah';
+                        statusClass = 'incorrect';
+                    }
+                    
+                    detailItem.innerHTML = `
+                        <div>Soal ${i + 1}: ${questions[i].question.substring(0, 60)}...</div>
+                        <div class="${statusClass}">${statusText}</div>
+                    `;
+                    
+                    resultsDetails.appendChild(detailItem);
+                }
+            }
+        }
+
+        // Fungsi untuk mereset tes
+        function resetTest() {
+            const message = state.currentScreen === 'english' ? 
+                "Are you sure you want to restart the test? All answers will be deleted." :
+                "Apakah kamu yakin ingin memulai tes ulang? Semua jawaban akan dihapus.";
+            
+            if (confirm(message)) {
+                // Reset state
+                state.answers = {
+                    matematika: Array(15).fill(null),
+                    ipa: Array(15).fill(null),
+                    "bahasa-indonesia": Array(15).fill(null),
+                    "english": Array(15).fill(null)
+                };
+                
+                state.timers = {
+                    matematika: 30 * 60,
+                    ipa: 30 * 60,
+                    "bahasa-indonesia": 30 * 60,
+                    "english": 30 * 60
+                };
+                
+                state.testStarted = {
+                    matematika: false,
+                    ipa: false,
+                    "bahasa-indonesia": false,
+                    "english": false
+                };
+                
+                state.progress = {
+                    matematika: 0,
+                    ipa: 0,
+                    "bahasa-indonesia": 0,
+                    "english": 0
+                };
+                
+                // Hentikan semua timer
+                for (const interval in state.timerIntervals) {
+                    clearInterval(state.timerIntervals[interval]);
+                }
+                
+                state.timerIntervals = {};
+                
+                // Update progress indicators
+                updateProgressIndicators();
+                
+                // Kembali ke beranda
+                changeScreen('welcome');
+            }
+        }
+
+        // Inisialisasi event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tombol mulai aplikasi
+            document.getElementById('start-app').addEventListener('click', startApp);
+            
+            // Enter di input nama juga memulai aplikasi
+            document.getElementById('student-name').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    startApp();
+                }
+            });
+            
+            // Pilihan kelas
+            document.querySelectorAll('.class-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    selectClass(this.dataset.class);
+                });
+            });
+            
+            // Tombol konfirmasi kelas
+            document.getElementById('confirm-class').addEventListener('click', confirmClass);
+            
+            // Tombol kembali ke input nama
+            document.getElementById('back-to-name').addEventListener('click', function() {
+                changeScreen('name-input');
+            });
+            
+            // Mode selector
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    changeMode(this.dataset.mode);
+                });
+            });
+            
+            // Menu navigasi
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const screenId = this.dataset.screen;
+                    changeScreen(screenId);
+                });
+            });
+            
+            // Tombol navigasi untuk Matematika
+            document.getElementById('matematika-prev').addEventListener('click', () => prevQuestion('matematika'));
+            document.getElementById('matematika-skip').addEventListener('click', () => skipQuestion('matematika'));
+            document.getElementById('matematika-hint').addEventListener('click', () => giveHint('matematika'));
+            
+            // Tombol navigasi untuk IPA
+            document.getElementById('ipa-prev').addEventListener('click', () => prevQuestion('ipa'));
+            document.getElementById('ipa-skip').addEventListener('click', () => skipQuestion('ipa'));
+            document.getElementById('ipa-hint').addEventListener('click', () => giveHint('ipa'));
+            
+            // Tombol navigasi untuk Bahasa Indonesia
+            document.getElementById('bahasa-indonesia-prev').addEventListener('click', () => prevQuestion('bahasa-indonesia'));
+            document.getElementById('bahasa-indonesia-skip').addEventListener('click', () => skipQuestion('bahasa-indonesia'));
+            document.getElementById('bahasa-indonesia-hint').addEventListener('click', () => giveHint('bahasa-indonesia'));
+            
+            // Tombol navigasi untuk Bahasa Inggris
+            document.getElementById('english-prev').addEventListener('click', () => prevQuestion('english'));
+            document.getElementById('english-skip').addEventListener('click', () => skipQuestion('english'));
+            document.getElementById('english-hint').addEventListener('click', () => giveHint('english'));
+            
+            // Tombol di layar hasil
+            document.getElementById('restart-test').addEventListener('click', resetTest);
+            document.getElementById('back-to-home').addEventListener('click', () => changeScreen('welcome'));
+            
+            // Inisialisasi awal
+            for (const subject in state.timers) {
+                updateTimerDisplay(subject);
+            }
+        });
+    </script>
+</body>
+</html>
